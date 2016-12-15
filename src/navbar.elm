@@ -63,6 +63,26 @@ navbar model =
                                 , attribute "aria-haspopup" "true"
                                 , attribute "aria-expanded" "false"
                                 ]
+                                [ text (t CurrentMaxnum)
+                                , text <| toString model.maxNum
+                                , span [ class [ "caret" ] ] []
+                                ]
+                            , ul
+                                [ class [ "dropdown-menu" ] ]
+                                [ li []
+                                    (List.map maxNumSelector [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
+                                ]
+                            ]
+                        , li
+                            [ class [ "dropdown" ] ]
+                            [ a
+                                [ href "#"
+                                , class [ "dropdown-toggle" ]
+                                , attribute "data-toggle" "dropdown"
+                                , attribute "role" "button"
+                                , attribute "aria-haspopup" "true"
+                                , attribute "aria-expanded" "false"
+                                ]
                                 [ text (t CurrentLanguage)
                                 , span [ class [ "caret" ] ] []
                                 ]
@@ -78,3 +98,7 @@ navbar model =
                     ]
                 ]
             ]
+
+
+maxNumSelector n =
+    a [ href "#", onClick (ChangeMaxNum n) ] [ text (toString n) ]

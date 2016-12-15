@@ -10,22 +10,7 @@ getText label =
             Just "Language: English"
 
         T.Title ->
-            Just "Passfrase"
+            Just "Multiplication practice"
 
-        T.PleaseWait ->
-            Just "Please wait..."
-
-        T.NumberOfWords ->
-            Just "Number of words"
-
-        T.Settings ->
-            Just "Settings"
-
-        T.InsertSpaces ->
-            Just "Insert spaces"
-
-        T.SatisfyPwRules ->
-            Just "Satisfy silly password rules"
-
-        T.AvoidNordicCharacters ->
-            Just "Avoid nordic characters"
+        T.CurrentMaxnum ->
+            Just "Use numbers up to "

@@ -1,0 +1,12 @@
+body {
+    background-color: #edeff0;
+}
+
+.PassphrasePanel > div {
+    background-color: #000000;
+    border: 0;
+}
+
+.PassphraseText {
+    color: #edeff0;
+}

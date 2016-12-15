@@ -1,63 +1,33 @@
 port module Update exposing (..)
 
-import Http
-import Random exposing (int, list)
+import Html exposing (Attribute)
+import Html.Events exposing (on, keyCode)
 import Message exposing (Msg(..))
 import Model exposing (Model)
-import GetWords exposing (getWords)
+import Commands exposing (createNumbers)
 import Platform.Cmd as Cmd exposing (batch)
 
 
 port setStorage : Model -> Cmd msg
 
 
-generateIndexes : Model -> ( Model, Cmd Msg )
-generateIndexes model =
-    let
-        maxIndex =
-            List.length model.words - 1
-    in
-        ( model
-        , batch
-            [ Random.generate NewIndexes (list model.numberOfWords (int 0 maxIndex))
-            , setStorage { model | words = [] }
-            ]
-        )
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ToggleSpaces ->
-            generateIndexes { model | insertSpaces = not model.insertSpaces }
+        CreateNumbers ->
+            ( model, createNumbers model )
 
-        TogglePwRules ->
-            generateIndexes { model | satisfyPwRules = not model.satisfyPwRules }
+        ChangeLanguage lang ->
+            ( { model | language = lang }, Cmd.none )
 
-        ToggleAvoidNordicCharacters ->
-            generateIndexes { model | avoidNordicCharacters = not model.avoidNordicCharacters }
+        NewNumbers (a :: b :: rest) ->
+            ( { model | numberOne = a, numberTwo = b }, Cmd.none )
 
-        ChangeNumberOfWords strN ->
-            let
-                n =
-                    Result.withDefault 0 (String.toInt strN)
-            in
-                generateIndexes { model | numberOfWords = n }
+        NewNumbers _ ->
+            ( model, Cmd.none )
 
-        NewIndexes indexes ->
-            ( { model | passphraseIndexes = indexes }, Cmd.none )
+        ChangeMaxNum n ->
+            ( { model | maxNum = n }, Cmd.none )
 
-        NewWords (Err _) ->
-            ( model, getWords model.dictionary )
-
-        NewWords (Ok words) ->
-            generateIndexes { model | words = words }
-
-        NewPassphrase ->
-            generateIndexes model
-
-        ChangeLanguage language ->
-            generateIndexes { model | language = language }
-
-        ChangeDictionary dictionary ->
-            ( { model | dictionary = dictionary }, getWords dictionary )
+        NewInput c ->
+            ( model, Cmd.none )

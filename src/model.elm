@@ -1,42 +1,31 @@
 module Model exposing (..)
 
+import Maybe exposing (withDefault)
 import Message exposing (Msg)
-import GetWords exposing (getWords)
-import Dictionary exposing (Dictionary(..))
+import Commands exposing (createNumbers)
 
 
 type alias Model =
-    { insertSpaces : Bool
-    , satisfyPwRules : Bool
-    , avoidNordicCharacters : Bool
-    , numberOfWords : Int
-    , passphraseIndexes : List Int
-    , words : List String
-    , language : String
-    , dictionary : Dictionary
+    { language : String
+    , maxNum : Int
+    , numberOne : Int
+    , numberTwo : Int
     }
 
 
 init : Maybe Model -> ( Model, Cmd Msg )
 init mayModel =
-    case mayModel of
-        Just model ->
-            ( { model
-                | words = [ "Vennligst", "vent", "..." ]
-                , passphraseIndexes = [ 0, 1, 2 ]
-              }
-            , getWords model.dictionary
-            )
+    let
+        initModel =
+            { language = "en"
+            , maxNum = 4
+            , numberOne = 1
+            , numberTwo = 1
+            }
 
-        Nothing ->
-            ( { insertSpaces = True
-              , satisfyPwRules = False
-              , avoidNordicCharacters = False
-              , numberOfWords = 4
-              , passphraseIndexes = [ 0, 1, 2 ]
-              , words = [ "Vennligst", "vent", "..." ]
-              , dictionary = ProgrammingBooks
-              , language = "en"
-              }
-            , getWords ProgrammingBooks
-            )
+        model =
+            withDefault initModel mayModel
+    in
+        ( model
+        , createNumbers model
+        )

@@ -10,22 +10,7 @@ getText label =
             Just "Språk: Norsk"
 
         T.Title ->
-            Just "Passfrase"
+            Just "Gangetrening"
 
-        T.PleaseWait ->
-            Just "Vennligst vent..."
-
-        T.NumberOfWords ->
-            Just "Antall ord"
-
-        T.Settings ->
-            Just "Innstillinger"
-
-        T.InsertSpaces ->
-            Just "Sett inn mellomrom"
-
-        T.SatisfyPwRules ->
-            Just "Oppfyll tullete passordkrav"
-
-        T.AvoidNordicCharacters ->
-            Just "Unngå æ/ø/å"
+        T.CurrentMaxnum ->
+            Just "Bruk tall opp til "
