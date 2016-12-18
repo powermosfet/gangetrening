@@ -22,4 +22,17 @@ css =
         , (.) Class.PassphraseText
             [ color Color.background
             ]
+        , (.) Class.PassphraseListItem
+            [ listStyle none
+            ]
+        , (.) Class.PassphraseInput
+            [ color Color.panel
+            , paddingTop <| Css.rem 0.3
+            , paddingBottom <| Css.rem 0.3
+            , paddingLeft <| Css.rem 1
+            , paddingRight <| Css.rem 1
+            ]
+        , (.) Class.WrongAnswer
+            [ backgroundColor Color.error
+            ]
         ]

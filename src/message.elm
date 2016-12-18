@@ -7,3 +7,5 @@ type Msg
     | NewNumbers (List Int)
     | NewInput Char
     | ChangeMaxNum Int
+    | NewAnswer String
+    | SubmitAnswer

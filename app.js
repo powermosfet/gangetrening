@@ -13745,6 +13745,10 @@ var _rtfeldman$elm_css_helpers$Html_CssHelpers$Namespace = F4(
 		return {$class: a, classList: b, id: c, name: d};
 	});
 
+var _user$project$Message$SubmitAnswer = {ctor: 'SubmitAnswer'};
+var _user$project$Message$NewAnswer = function (a) {
+	return {ctor: 'NewAnswer', _0: a};
+};
 var _user$project$Message$ChangeMaxNum = function (a) {
 	return {ctor: 'ChangeMaxNum', _0: a};
 };
@@ -13766,7 +13770,7 @@ var _user$project$Commands$createNumbers = function (model) {
 		A2(
 			_elm_lang$core$Random$list,
 			2,
-			A2(_elm_lang$core$Random$int, 0, model.maxNum)));
+			A2(_elm_lang$core$Random$int, 1, model.maxNum)));
 };
 
 var _user$project$Translations_Types$CurrentMaxnum = {ctor: 'CurrentMaxnum'};
@@ -13833,7 +13837,13 @@ var _user$project$Internationalization$getText = F2(
 	});
 
 var _user$project$Model$init = function (mayModel) {
-	var initModel = {language: 'en', maxNum: 4, numberOne: 1, numberTwo: 1};
+	var initModel = {
+		language: 'en',
+		maxNum: 4,
+		history: {ctor: '[]'},
+		current: {ctor: '_Tuple3', _0: -1, _1: -1, _2: ''},
+		wrongAnswer: false
+	};
 	var model = A2(_elm_lang$core$Maybe$withDefault, initModel, mayModel);
 	return {
 		ctor: '_Tuple2',
@@ -13841,9 +13851,9 @@ var _user$project$Model$init = function (mayModel) {
 		_1: _user$project$Commands$createNumbers(model)
 	};
 };
-var _user$project$Model$Model = F4(
-	function (a, b, c, d) {
-		return {language: a, maxNum: b, numberOne: c, numberTwo: d};
+var _user$project$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {language: a, maxNum: b, history: c, current: d, wrongAnswer: e};
 	});
 
 var _user$project$Update$update = F2(
@@ -13866,11 +13876,17 @@ var _user$project$Update$update = F2(
 				};
 			case 'NewNumbers':
 				if ((_p0._0.ctor === '::') && (_p0._0._1.ctor === '::')) {
+					var _p1 = model.current;
+					var oldA = _p1._0;
+					var newHistory = (_elm_lang$core$Native_Utils.cmp(oldA, 0) < 0) ? model.history : {ctor: '::', _0: model.current, _1: model.history};
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{numberOne: _p0._0._0, numberTwo: _p0._0._1._0}),
+							{
+								current: {ctor: '_Tuple3', _0: _p0._0._0, _1: _p0._0._1._0, _2: ''},
+								history: newHistory
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -13884,19 +13900,64 @@ var _user$project$Update$update = F2(
 						{maxNum: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'NewInput':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'NewAnswer':
+				var _p2 = model.current;
+				var f1 = _p2._0;
+				var f2 = _p2._1;
+				var newCurrent = {ctor: '_Tuple3', _0: f1, _1: f2, _2: _p0._0};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{current: newCurrent}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var _p3 = model.current;
+				var f1 = _p3._0;
+				var f2 = _p3._1;
+				var answer = _p3._2;
+				return _elm_lang$core$Native_Utils.eq(
+					_elm_lang$core$Basics$toString(f1 * f2),
+					answer) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{wrongAnswer: false}),
+					_1: _user$project$Commands$createNumbers(model)
+				} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{wrongAnswer: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Update$setStorage = _elm_lang$core$Native_Platform.outgoingPort(
 	'setStorage',
 	function (v) {
-		return {language: v.language, maxNum: v.maxNum, numberOne: v.numberOne, numberTwo: v.numberTwo};
+		return {
+			language: v.language,
+			maxNum: v.maxNum,
+			history: _elm_lang$core$Native_List.toArray(v.history).map(
+				function (v) {
+					return [v._0, v._1, v._2];
+				}),
+			current: [v.current._0, v.current._1, v.current._2],
+			wrongAnswer: v.wrongAnswer
+		};
 	});
 
+var _user$project$Styles_Colors$error = _rtfeldman$elm_css$Css$hex('e41f1f');
 var _user$project$Styles_Colors$panel = _rtfeldman$elm_css$Css$hex('000000');
 var _user$project$Styles_Colors$background = _rtfeldman$elm_css$Css$hex('edeff0');
 
+var _user$project$Styles_Classes$WrongAnswer = {ctor: 'WrongAnswer'};
+var _user$project$Styles_Classes$PassphraseInput = {ctor: 'PassphraseInput'};
+var _user$project$Styles_Classes$PassphraseListItem = {ctor: 'PassphraseListItem'};
 var _user$project$Styles_Classes$PassphraseText = {ctor: 'PassphraseText'};
 var _user$project$Styles_Classes$PassphrasePanel = {ctor: 'PassphrasePanel'};
 
@@ -13949,7 +14010,69 @@ var _user$project$Styles_Styles$css = _rtfeldman$elm_css$Css$stylesheet(
 						_0: _rtfeldman$elm_css$Css$color(_user$project$Styles_Colors$background),
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						F2(
+							function (x, y) {
+								return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+							}),
+						_user$project$Styles_Classes$PassphraseListItem,
+						{
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css$listStyle(_rtfeldman$elm_css$Css$none),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							F2(
+								function (x, y) {
+									return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+								}),
+							_user$project$Styles_Classes$PassphraseInput,
+							{
+								ctor: '::',
+								_0: _rtfeldman$elm_css$Css$color(_user$project$Styles_Colors$panel),
+								_1: {
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css$paddingTop(
+										_rtfeldman$elm_css$Css$rem(0.3)),
+									_1: {
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$paddingBottom(
+											_rtfeldman$elm_css$Css$rem(0.3)),
+										_1: {
+											ctor: '::',
+											_0: _rtfeldman$elm_css$Css$paddingLeft(
+												_rtfeldman$elm_css$Css$rem(1)),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$paddingRight(
+													_rtfeldman$elm_css$Css$rem(1)),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								F2(
+									function (x, y) {
+										return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+									}),
+								_user$project$Styles_Classes$WrongAnswer,
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css$backgroundColor(_user$project$Styles_Colors$error),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
 			}
 		}
 	});
@@ -14484,10 +14607,129 @@ var _user$project$Navbar$navbar = function (model) {
 		});
 };
 
+var _user$project$View$inputCssClasses = function (wrongAnswer) {
+	return wrongAnswer ? {
+		ctor: '::',
+		_0: _user$project$Styles_Classes$PassphraseInput,
+		_1: {
+			ctor: '::',
+			_0: _user$project$Styles_Classes$WrongAnswer,
+			_1: {ctor: '[]'}
+		}
+	} : {
+		ctor: '::',
+		_0: _user$project$Styles_Classes$PassphraseInput,
+		_1: {ctor: '[]'}
+	};
+};
 var _user$project$View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
 var _user$project$View$id = _user$project$View$_p0.id;
 var _user$project$View$class = _user$project$View$_p0.$class;
 var _user$project$View$classList = _user$project$View$_p0.classList;
+var _user$project$View$numberLi = function (content) {
+	return A2(
+		_elm_lang$html$Html$li,
+		{
+			ctor: '::',
+			_0: _user$project$View$class(
+				{
+					ctor: '::',
+					_0: _user$project$Styles_Classes$PassphraseListItem,
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{
+					ctor: '::',
+					_0: _user$project$View$class(
+						{
+							ctor: '::',
+							_0: _user$project$Styles_Classes$PassphraseText,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				content),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$View$oldNumber = function (_p1) {
+	var _p2 = _p1;
+	return _user$project$View$numberLi(
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(_p2._0)),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(' · '),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(_p2._1)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(' = '),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p2._2),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$View$currentNumbers = function (model) {
+	var _p3 = model.current;
+	var f1 = _p3._0;
+	var f2 = _p3._1;
+	var answer = _p3._2;
+	return _user$project$View$numberLi(
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(f1)),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(' · '),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(f2)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(' = '),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$input,
+								{
+									ctor: '::',
+									_0: _user$project$View$class(
+										_user$project$View$inputCssClasses(model.wrongAnswer)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$value(answer),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onInput(_user$project$Message$NewAnswer),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
 var _user$project$View$view = function (model) {
 	var t = _user$project$Internationalization$getText(model.language);
 	return A2(
@@ -14499,7 +14741,7 @@ var _user$project$View$view = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$div,
+					_elm_lang$html$Html$form,
 					{
 						ctor: '::',
 						_0: _user$project$View$class(
@@ -14508,7 +14750,11 @@ var _user$project$View$view = function (model) {
 								_0: _user$project$Styles_Classes$PassphrasePanel,
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onSubmit(_user$project$Message$SubmitAnswer),
+							_1: {ctor: '[]'}
+						}
 					},
 					{
 						ctor: '::',
@@ -14549,32 +14795,19 @@ var _user$project$View$view = function (model) {
 									{
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$h1,
-											{
-												ctor: '::',
-												_0: _user$project$View$class(
-													{
-														ctor: '::',
-														_0: _user$project$Styles_Classes$PassphraseText,
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(
-													_elm_lang$core$Basics$toString(model.numberOne)),
-												_1: {
+											_elm_lang$html$Html$ul,
+											{ctor: '[]'},
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												A2(
+													_elm_lang$core$List$map,
+													_user$project$View$oldNumber,
+													_elm_lang$core$List$reverse(model.history)),
+												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text(' · '),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(
-															_elm_lang$core$Basics$toString(model.numberTwo)),
-														_1: {ctor: '[]'}
-													}
-												}
-											}),
+													_0: _user$project$View$currentNumbers(model),
+													_1: {ctor: '[]'}
+												})),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
@@ -14602,26 +14835,70 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 					_elm_lang$core$Maybe$Just,
 					A2(
 						_elm_lang$core$Json_Decode$andThen,
-						function (language) {
+						function (current) {
 							return A2(
 								_elm_lang$core$Json_Decode$andThen,
-								function (maxNum) {
+								function (history) {
 									return A2(
 										_elm_lang$core$Json_Decode$andThen,
-										function (numberOne) {
+										function (language) {
 											return A2(
 												_elm_lang$core$Json_Decode$andThen,
-												function (numberTwo) {
-													return _elm_lang$core$Json_Decode$succeed(
-														{language: language, maxNum: maxNum, numberOne: numberOne, numberTwo: numberTwo});
+												function (maxNum) {
+													return A2(
+														_elm_lang$core$Json_Decode$andThen,
+														function (wrongAnswer) {
+															return _elm_lang$core$Json_Decode$succeed(
+																{current: current, history: history, language: language, maxNum: maxNum, wrongAnswer: wrongAnswer});
+														},
+														A2(_elm_lang$core$Json_Decode$field, 'wrongAnswer', _elm_lang$core$Json_Decode$bool));
 												},
-												A2(_elm_lang$core$Json_Decode$field, 'numberTwo', _elm_lang$core$Json_Decode$int));
+												A2(_elm_lang$core$Json_Decode$field, 'maxNum', _elm_lang$core$Json_Decode$int));
 										},
-										A2(_elm_lang$core$Json_Decode$field, 'numberOne', _elm_lang$core$Json_Decode$int));
+										A2(_elm_lang$core$Json_Decode$field, 'language', _elm_lang$core$Json_Decode$string));
 								},
-								A2(_elm_lang$core$Json_Decode$field, 'maxNum', _elm_lang$core$Json_Decode$int));
+								A2(
+									_elm_lang$core$Json_Decode$field,
+									'history',
+									_elm_lang$core$Json_Decode$list(
+										A2(
+											_elm_lang$core$Json_Decode$andThen,
+											function (x0) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													function (x1) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															function (x2) {
+																return _elm_lang$core$Json_Decode$succeed(
+																	{ctor: '_Tuple3', _0: x0, _1: x1, _2: x2});
+															},
+															A2(_elm_lang$core$Json_Decode$index, 2, _elm_lang$core$Json_Decode$string));
+													},
+													A2(_elm_lang$core$Json_Decode$index, 1, _elm_lang$core$Json_Decode$int));
+											},
+											A2(_elm_lang$core$Json_Decode$index, 0, _elm_lang$core$Json_Decode$int)))));
 						},
-						A2(_elm_lang$core$Json_Decode$field, 'language', _elm_lang$core$Json_Decode$string))),
+						A2(
+							_elm_lang$core$Json_Decode$field,
+							'current',
+							A2(
+								_elm_lang$core$Json_Decode$andThen,
+								function (x0) {
+									return A2(
+										_elm_lang$core$Json_Decode$andThen,
+										function (x1) {
+											return A2(
+												_elm_lang$core$Json_Decode$andThen,
+												function (x2) {
+													return _elm_lang$core$Json_Decode$succeed(
+														{ctor: '_Tuple3', _0: x0, _1: x1, _2: x2});
+												},
+												A2(_elm_lang$core$Json_Decode$index, 2, _elm_lang$core$Json_Decode$string));
+										},
+										A2(_elm_lang$core$Json_Decode$index, 1, _elm_lang$core$Json_Decode$int));
+								},
+								A2(_elm_lang$core$Json_Decode$index, 0, _elm_lang$core$Json_Decode$int))))),
 				_1: {ctor: '[]'}
 			}
 		}));

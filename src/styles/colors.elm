@@ -9,3 +9,7 @@ background =
 
 panel =
     hex "000000"
+
+
+error =
+    hex "e41f1f"

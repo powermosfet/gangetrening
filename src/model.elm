@@ -5,11 +5,16 @@ import Message exposing (Msg)
 import Commands exposing (createNumbers)
 
 
+type alias Multiplication =
+    ( Int, Int, String )
+
+
 type alias Model =
     { language : String
     , maxNum : Int
-    , numberOne : Int
-    , numberTwo : Int
+    , history : List Multiplication
+    , current : Multiplication
+    , wrongAnswer : Bool
     }
 
 
@@ -19,8 +24,9 @@ init mayModel =
         initModel =
             { language = "en"
             , maxNum = 4
-            , numberOne = 1
-            , numberTwo = 1
+            , history = []
+            , current = ( -1, -1, "" )
+            , wrongAnswer = False
             }
 
         model =

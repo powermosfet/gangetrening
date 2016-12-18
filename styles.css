@@ -10,3 +10,19 @@ body {
 .PassphraseText {
     color: #edeff0;
 }
+
+.PassphraseListItem {
+    list-style: none;
+}
+
+.PassphraseInput {
+    color: #000000;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.WrongAnswer {
+    background-color: #e41f1f;
+}
