@@ -1,7 +1,16 @@
 module Translations.Types exposing (..)
 
 
+type Language
+    = Nor
+    | Eng
+
+
 type Label
     = CurrentLanguage
     | Title
-    | CurrentMaxnum
+    | CurrentMaximum
+    | Start
+    | MultiplicationSymbol
+    | Finished
+    | Restart

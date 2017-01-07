@@ -5,12 +5,25 @@ import Translations.Types as T
 
 getText : T.Label -> Maybe String
 getText label =
-    case label of
-        T.CurrentLanguage ->
-            Just "Språk: Norsk"
+    Just <|
+        case label of
+            T.CurrentLanguage ->
+                "Språk: Norsk"
 
-        T.Title ->
-            Just "Gangetrening"
+            T.Title ->
+                "Gangetrening"
 
-        T.CurrentMaxnum ->
-            Just "Bruk tall opp til "
+            T.CurrentMaximum ->
+                "Bruk tall opp til "
+
+            T.Start ->
+                "Start"
+
+            T.MultiplicationSymbol ->
+                " · "
+
+            T.Finished ->
+                "Du klarte alle! Bra jobba!"
+
+            T.Restart ->
+                "Start på nytt"

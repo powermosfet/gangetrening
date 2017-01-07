@@ -3,14 +3,26 @@ module Translations.English exposing (..)
 import Translations.Types as T
 
 
-getText : T.Label -> Maybe String
+getText : T.Label -> String
 getText label =
     case label of
         T.CurrentLanguage ->
-            Just "Language: English"
+            "Language: English"
 
         T.Title ->
-            Just "Multiplication practice"
+            "Multiplication practice"
 
-        T.CurrentMaxnum ->
-            Just "Use numbers up to "
+        T.CurrentMaximum ->
+            "Use numbers up to "
+
+        T.Start ->
+            "Start"
+
+        T.MultiplicationSymbol ->
+            " · "
+
+        T.Finished ->
+            "You made it! Well done!"
+
+        T.Restart ->
+            "Restart"

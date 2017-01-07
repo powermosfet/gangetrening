@@ -3,61 +3,96 @@ port module Update exposing (..)
 import Html exposing (Attribute)
 import Html.Events exposing (on, keyCode)
 import Message exposing (Msg(..))
-import Model exposing (Model)
-import Commands exposing (createNumbers)
+import Model exposing (Model, Multiplication, isWrong, isCorrect, GameState(..))
+import Commands exposing (createShuffledMultiplications)
 import Platform.Cmd as Cmd exposing (batch)
-
-
-port setStorage : Model -> Cmd msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        CreateNumbers ->
-            ( model, createNumbers model )
+        Start ->
+            ( model, createShuffledMultiplications model )
 
         ChangeLanguage lang ->
-            ( { model | language = lang }, Cmd.none )
+            ( { model | language = lang, gameState = NotStarted }, Cmd.none )
 
-        NewNumbers (a :: b :: rest) ->
-            let
-                ( oldA, _, _ ) =
-                    model.current
+        NewMultiplications mults ->
+            ( { model | multiplications = mults, gameState = Running }, Cmd.none )
 
-                newHistory =
-                    if oldA < 0 then
-                        model.history
-                    else
-                        model.current :: model.history
-            in
-                ( { model | current = ( a, b, "" ), history = newHistory }, Cmd.none )
-
-        NewNumbers _ ->
-            ( model, Cmd.none )
-
-        ChangeMaxNum n ->
-            ( { model | maxNum = n }, Cmd.none )
-
-        NewInput c ->
-            ( model, Cmd.none )
+        ChangeMaximum n ->
+            ( { model | maximum = n, gameState = NotStarted }
+            , Cmd.none
+            )
 
         NewAnswer newAnswer ->
-            let
-                ( f1, f2, _ ) =
-                    model.current
-
-                newCurrent =
-                    ( f1, f2, newAnswer )
-            in
-                ( { model | current = newCurrent }, Cmd.none )
+            ( { model | multiplications = updateFirst (changeAnswer newAnswer) model.multiplications }, Cmd.none )
 
         SubmitAnswer ->
             let
-                ( f1, f2, answer ) =
-                    model.current
+                mults =
+                    rotate model.multiplications
+                        |> rotateUntil (not << isCorrect)
+
+                gameState =
+                    if List.all isCorrect mults then
+                        Finished
+                    else
+                        model.gameState
             in
-                if toString (f1 * f2) == answer then
-                    ( { model | wrongAnswer = False }, createNumbers model )
+                ( { model
+                    | multiplications = mults
+                    , gameState = gameState
+                  }
+                , Cmd.none
+                )
+
+
+rotateUntil : (a -> Bool) -> List a -> List a
+rotateUntil f list =
+    rotateUntil_ f (List.length list) list
+
+
+rotateUntil_ : (a -> Bool) -> Int -> List a -> List a
+rotateUntil_ f max list =
+    case list of
+        x :: xs ->
+            let
+                rotated =
+                    rotate list
+
+                done =
+                    (max <= 0) || (f x)
+            in
+                if done then
+                    list
                 else
-                    ( { model | wrongAnswer = True }, Cmd.none )
+                    rotateUntil_ f (max - 1) rotated
+
+        _ ->
+            []
+
+
+rotate : List a -> List a
+rotate list =
+    case list of
+        x :: xs ->
+            xs ++ [ x ]
+
+        _ ->
+            []
+
+
+updateFirst : (a -> a) -> List a -> List a
+updateFirst f list =
+    case list of
+        x :: xs ->
+            (f x) :: xs
+
+        _ ->
+            []
+
+
+changeAnswer : String -> Multiplication -> Multiplication
+changeAnswer ans ( f1, f2, _ ) =
+    ( f1, f2, ans )
