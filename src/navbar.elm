@@ -63,14 +63,14 @@ navbar model =
                                 , attribute "aria-haspopup" "true"
                                 , attribute "aria-expanded" "false"
                                 ]
-                                [ text (t CurrentMaxnum)
-                                , text <| toString model.maxNum
+                                [ text (t CurrentMaximum)
+                                , text <| toString model.maximum
                                 , span [ class [ "caret" ] ] []
                                 ]
                             , ul
                                 [ class [ "dropdown-menu" ] ]
                                 [ li []
-                                    (List.map maxNumSelector [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
+                                    (List.map maximumSelector [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
                                 ]
                             ]
                         , li
@@ -89,8 +89,8 @@ navbar model =
                             , ul
                                 [ class [ "dropdown-menu" ] ]
                                 [ li []
-                                    [ a [ href "#", onClick (ChangeLanguage "no") ] [ text "Norsk" ]
-                                    , a [ href "#", onClick (ChangeLanguage "en") ] [ text "English" ]
+                                    [ a [ href "#", onClick (ChangeLanguage Nor) ] [ text "Norsk" ]
+                                    , a [ href "#", onClick (ChangeLanguage Eng) ] [ text "English" ]
                                     ]
                                 ]
                             ]
@@ -100,5 +100,5 @@ navbar model =
             ]
 
 
-maxNumSelector n =
-    a [ href "#", onClick (ChangeMaxNum n) ] [ text (toString n) ]
+maximumSelector n =
+    a [ href "#", onClick (ChangeMaximum n) ] [ text (toString n) ]

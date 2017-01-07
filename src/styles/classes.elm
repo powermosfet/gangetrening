@@ -6,4 +6,13 @@ type CssClasses
     | PassphraseText
     | PassphraseListItem
     | PassphraseInput
+    | PanelBody
     | WrongAnswer
+    | Circle
+    | CircleFigure
+    | Chart
+    | Wrong
+    | Correct
+    | Neutral
+    | RingContent
+    | AnswerInput

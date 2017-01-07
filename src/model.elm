@@ -1,37 +1,36 @@
 module Model exposing (..)
 
-import Maybe exposing (withDefault)
-import Message exposing (Msg)
-import Commands exposing (createNumbers)
+import Translations.Types exposing (Language)
 
 
 type alias Multiplication =
     ( Int, Int, String )
 
 
+isCorrect : Multiplication -> Bool
+isCorrect ( f1, f2, ans ) =
+    toString (f1 * f2) == ans
+
+
+isWrong : Multiplication -> Bool
+isWrong m =
+    not (isEmpty m || isCorrect m)
+
+
+isEmpty : Multiplication -> Bool
+isEmpty ( _, _, ans ) =
+    String.isEmpty ans
+
+
+type GameState
+    = NotStarted
+    | Running
+    | Finished
+
+
 type alias Model =
-    { language : String
-    , maxNum : Int
-    , history : List Multiplication
-    , current : Multiplication
-    , wrongAnswer : Bool
+    { language : Language
+    , maximum : Int
+    , multiplications : List Multiplication
+    , gameState : GameState
     }
-
-
-init : Maybe Model -> ( Model, Cmd Msg )
-init mayModel =
-    let
-        initModel =
-            { language = "en"
-            , maxNum = 4
-            , history = []
-            , current = ( -1, -1, "" )
-            , wrongAnswer = False
-            }
-
-        model =
-            withDefault initModel mayModel
-    in
-        ( model
-        , createNumbers model
-        )

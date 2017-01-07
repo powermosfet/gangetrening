@@ -2,37 +2,86 @@ module Styles.Styles exposing (..)
 
 import Css exposing (..)
 import Css.Elements exposing (div, body, li)
-import Styles.Colors as Color
+import Styles.Constants
 import Styles.Classes as Class
 
 
 css =
-    stylesheet
-        [ body
-            [ backgroundColor Color.background
-            ]
-        , (.) Class.PassphrasePanel
-            [ children
-                [ div
-                    [ backgroundColor Color.panel
-                    , border zero
+    let
+        circle =
+            Styles.Constants.circle
+
+        colors =
+            Styles.Constants.colors
+
+        margins =
+            Styles.Constants.margins
+    in
+        stylesheet
+            [ body
+                [ backgroundColor colors.background
+                ]
+            , (.) Class.PassphrasePanel
+                [ children
+                    [ div
+                        [ backgroundColor colors.panel
+                        , border zero
+                        ]
                     ]
                 ]
+            , (.) Class.PassphraseText
+                [ color colors.background
+                ]
+            , (.) Class.PassphraseListItem
+                [ listStyle none
+                ]
+            , (.) Class.PassphraseInput
+                [ color colors.panel
+                , paddingTop margins.small
+                , paddingBottom margins.small
+                , paddingLeft margins.medium
+                , paddingRight margins.medium
+                ]
+            , (.) Class.PanelBody
+                [ property "display" "flex"
+                , property "justify-content" "center"
+                ]
+            , (.) Class.WrongAnswer
+                [ backgroundColor colors.error
+                ]
+            , (.) Class.CircleFigure
+                [ margin <| Css.rem 5
+                , maxWidth <| Css.rem 50
+                , flexGrow <| num 1
+                ]
+            , (.) Class.Circle
+                [ property "fill" "transparent"
+                , property "stroke-width" (toString circle.stroke)
+                ]
+            , (.) Class.Wrong
+                [ property "stroke" colors.wrong.value
+                ]
+            , (.) Class.Correct
+                [ property "stroke" colors.correct.value
+                ]
+            , (.) Class.Neutral
+                [ property "stroke" colors.neutral.value
+                ]
+            , (.) Class.RingContent
+                [ position absolute
+                , property "display" "flex"
+                , top zero
+                , left zero
+                , height <| pct 100
+                , width <| pct 100
+                , property "justify-content" "center"
+                , alignItems center
+                , textAlign center
+                ]
+            , (.) Class.AnswerInput
+                [ border <| px 1
+                , borderColor colors.background
+                , color colors.panel
+                , width <| Css.rem 10
+                ]
             ]
-        , (.) Class.PassphraseText
-            [ color Color.background
-            ]
-        , (.) Class.PassphraseListItem
-            [ listStyle none
-            ]
-        , (.) Class.PassphraseInput
-            [ color Color.panel
-            , paddingTop <| Css.rem 0.3
-            , paddingBottom <| Css.rem 0.3
-            , paddingLeft <| Css.rem 1
-            , paddingRight <| Css.rem 1
-            ]
-        , (.) Class.WrongAnswer
-            [ backgroundColor Color.error
-            ]
-        ]

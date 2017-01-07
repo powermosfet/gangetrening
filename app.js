@@ -14460,18 +14460,26 @@ var _rtfeldman$elm_css_helpers$Html_CssHelpers$Namespace = F4(
 
 var _user$project$Translations_Types$Eng = {ctor: 'Eng'};
 var _user$project$Translations_Types$Nor = {ctor: 'Nor'};
+var _user$project$Translations_Types$Restart = {ctor: 'Restart'};
+var _user$project$Translations_Types$Finished = {ctor: 'Finished'};
+var _user$project$Translations_Types$MultiplicationSymbol = {ctor: 'MultiplicationSymbol'};
+var _user$project$Translations_Types$Start = {ctor: 'Start'};
 var _user$project$Translations_Types$CurrentMaximum = {ctor: 'CurrentMaximum'};
 var _user$project$Translations_Types$Title = {ctor: 'Title'};
 var _user$project$Translations_Types$CurrentLanguage = {ctor: 'CurrentLanguage'};
 
-var _user$project$Model$isCorrect = function (_p0) {
+var _user$project$Model$isEmpty = function (_p0) {
 	var _p1 = _p0;
-	return _elm_lang$core$Native_Utils.eq(
-		_elm_lang$core$Basics$toString(_p1._0 * _p1._1),
-		_p1._2);
+	return _elm_lang$core$String$isEmpty(_p1._2);
 };
-var _user$project$Model$isWrong = function (_p2) {
-	return !_user$project$Model$isCorrect(_p2);
+var _user$project$Model$isCorrect = function (_p2) {
+	var _p3 = _p2;
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Basics$toString(_p3._0 * _p3._1),
+		_p3._2);
+};
+var _user$project$Model$isWrong = function (m) {
+	return !(_user$project$Model$isEmpty(m) || _user$project$Model$isCorrect(m));
 };
 var _user$project$Model$Model = F4(
 	function (a, b, c, d) {
@@ -14481,6 +14489,7 @@ var _user$project$Model$Finished = {ctor: 'Finished'};
 var _user$project$Model$Running = {ctor: 'Running'};
 var _user$project$Model$NotStarted = {ctor: 'NotStarted'};
 
+var _user$project$Message$Start = {ctor: 'Start'};
 var _user$project$Message$SubmitAnswer = {ctor: 'SubmitAnswer'};
 var _user$project$Message$NewAnswer = function (a) {
 	return {ctor: 'NewAnswer', _0: a};
@@ -14494,7 +14503,6 @@ var _user$project$Message$NewMultiplications = function (a) {
 var _user$project$Message$ChangeLanguage = function (a) {
 	return {ctor: 'ChangeLanguage', _0: a};
 };
-var _user$project$Message$CreateMultiplications = {ctor: 'CreateMultiplications'};
 
 var _user$project$Commands$createMultsforN = function (n) {
 	return A2(
@@ -14519,19 +14527,16 @@ var _user$project$Commands$createShuffledMultiplications = function (model) {
 			_user$project$Commands$createMultiplications(model.maximum)));
 };
 
-var _user$project$Init$init = function () {
-	var model = {
+var _user$project$Init$init = {
+	ctor: '_Tuple2',
+	_0: {
 		language: _user$project$Translations_Types$Eng,
 		maximum: 4,
 		multiplications: {ctor: '[]'},
 		gameState: _user$project$Model$NotStarted
-	};
-	return {
-		ctor: '_Tuple2',
-		_0: model,
-		_1: _user$project$Commands$createShuffledMultiplications(model)
-	};
-}();
+	},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
 
 var _user$project$Translations_Norwegian$getText = function (label) {
 	return _elm_lang$core$Maybe$Just(
@@ -14542,8 +14547,16 @@ var _user$project$Translations_Norwegian$getText = function (label) {
 					return 'Språk: Norsk';
 				case 'Title':
 					return 'Gangetrening';
-				default:
+				case 'CurrentMaximum':
 					return 'Bruk tall opp til ';
+				case 'Start':
+					return 'Start';
+				case 'MultiplicationSymbol':
+					return ' · ';
+				case 'Finished':
+					return 'Du klarte alle! Bra jobba!';
+				default:
+					return 'Start på nytt';
 			}
 		}());
 };
@@ -14555,8 +14568,16 @@ var _user$project$Translations_English$getText = function (label) {
 			return 'Language: English';
 		case 'Title':
 			return 'Multiplication practice';
-		default:
+		case 'CurrentMaximum':
 			return 'Use numbers up to ';
+		case 'Start':
+			return 'Start';
+		case 'MultiplicationSymbol':
+			return ' · ';
+		case 'Finished':
+			return 'You made it! Well done!';
+		default:
+			return 'Restart';
 	}
 };
 
@@ -14650,7 +14671,7 @@ var _user$project$Update$update = F2(
 	function (msg, model) {
 		var _p5 = msg;
 		switch (_p5.ctor) {
-			case 'CreateMultiplications':
+			case 'Start':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
@@ -14661,7 +14682,7 @@ var _user$project$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{language: _p5._0}),
+						{language: _p5._0, gameState: _user$project$Model$NotStarted}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'NewMultiplications':
@@ -14669,7 +14690,7 @@ var _user$project$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{multiplications: _p5._0}),
+						{multiplications: _p5._0, gameState: _user$project$Model$Running}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'ChangeMaximum':
@@ -14677,7 +14698,7 @@ var _user$project$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{maximum: _p5._0}),
+						{maximum: _p5._0, gameState: _user$project$Model$NotStarted}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'NewAnswer':
@@ -14694,13 +14715,18 @@ var _user$project$Update$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
+				var mults = A2(
+					_user$project$Update$rotateUntil,
+					function (_p6) {
+						return !_user$project$Model$isCorrect(_p6);
+					},
+					_user$project$Update$rotate(model.multiplications));
+				var gameState = A2(_elm_lang$core$List$all, _user$project$Model$isCorrect, mults) ? _user$project$Model$Finished : model.gameState;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{
-							multiplications: A2(_user$project$Update$rotateUntil, _user$project$Model$isWrong, model.multiplications)
-						}),
+						{multiplications: mults, gameState: gameState}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
@@ -14715,17 +14741,21 @@ var _user$project$Styles_Constants$colors = {
 	background: _rtfeldman$elm_css$Css$hex('edeff0'),
 	panel: _rtfeldman$elm_css$Css$hex('000000'),
 	error: _rtfeldman$elm_css$Css$hex('e41f1f'),
-	wrong: 'red',
-	correct: 'green',
-	neutral: 'cyan'
+	wrong: _rtfeldman$elm_css$Css$hex('FF6559'),
+	correct: _rtfeldman$elm_css$Css$hex('C7F556'),
+	neutral: _rtfeldman$elm_css$Css$hex('4A9AC1')
 };
 
+var _user$project$Styles_Classes$AnswerInput = {ctor: 'AnswerInput'};
+var _user$project$Styles_Classes$RingContent = {ctor: 'RingContent'};
 var _user$project$Styles_Classes$Neutral = {ctor: 'Neutral'};
 var _user$project$Styles_Classes$Correct = {ctor: 'Correct'};
 var _user$project$Styles_Classes$Wrong = {ctor: 'Wrong'};
 var _user$project$Styles_Classes$Chart = {ctor: 'Chart'};
+var _user$project$Styles_Classes$CircleFigure = {ctor: 'CircleFigure'};
 var _user$project$Styles_Classes$Circle = {ctor: 'Circle'};
 var _user$project$Styles_Classes$WrongAnswer = {ctor: 'WrongAnswer'};
+var _user$project$Styles_Classes$PanelBody = {ctor: 'PanelBody'};
 var _user$project$Styles_Classes$PassphraseInput = {ctor: 'PassphraseInput'};
 var _user$project$Styles_Classes$PassphraseListItem = {ctor: 'PassphraseListItem'};
 var _user$project$Styles_Classes$PassphraseText = {ctor: 'PassphraseText'};
@@ -14833,11 +14863,15 @@ var _user$project$Styles_Styles$css = function () {
 										function (x, y) {
 											return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 										}),
-									_user$project$Styles_Classes$WrongAnswer,
+									_user$project$Styles_Classes$PanelBody,
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Css$backgroundColor(colors.error),
-										_1: {ctor: '[]'}
+										_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
+										_1: {
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
+											_1: {ctor: '[]'}
+										}
 									}),
 								_1: {
 									ctor: '::',
@@ -14846,18 +14880,11 @@ var _user$project$Styles_Styles$css = function () {
 											function (x, y) {
 												return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 											}),
-										_user$project$Styles_Classes$Circle,
+										_user$project$Styles_Classes$WrongAnswer,
 										{
 											ctor: '::',
-											_0: A2(_rtfeldman$elm_css$Css$property, 'fill', 'transparent'),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_rtfeldman$elm_css$Css$property,
-													'stroke-width',
-													_elm_lang$core$Basics$toString(circle.stroke)),
-												_1: {ctor: '[]'}
-											}
+											_0: _rtfeldman$elm_css$Css$backgroundColor(colors.error),
+											_1: {ctor: '[]'}
 										}),
 									_1: {
 										ctor: '::',
@@ -14866,11 +14893,22 @@ var _user$project$Styles_Styles$css = function () {
 												function (x, y) {
 													return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 												}),
-											_user$project$Styles_Classes$Wrong,
+											_user$project$Styles_Classes$CircleFigure,
 											{
 												ctor: '::',
-												_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.wrong),
-												_1: {ctor: '[]'}
+												_0: _rtfeldman$elm_css$Css$margin(
+													_rtfeldman$elm_css$Css$rem(5)),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$maxWidth(
+														_rtfeldman$elm_css$Css$rem(50)),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$flexGrow(
+															_rtfeldman$elm_css$Css$num(1)),
+														_1: {ctor: '[]'}
+													}
+												}
 											}),
 										_1: {
 											ctor: '::',
@@ -14879,11 +14917,18 @@ var _user$project$Styles_Styles$css = function () {
 													function (x, y) {
 														return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 													}),
-												_user$project$Styles_Classes$Correct,
+												_user$project$Styles_Classes$Circle,
 												{
 													ctor: '::',
-													_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.correct),
-													_1: {ctor: '[]'}
+													_0: A2(_rtfeldman$elm_css$Css$property, 'fill', 'transparent'),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_rtfeldman$elm_css$Css$property,
+															'stroke-width',
+															_elm_lang$core$Basics$toString(circle.stroke)),
+														_1: {ctor: '[]'}
+													}
 												}),
 											_1: {
 												ctor: '::',
@@ -14892,13 +14937,117 @@ var _user$project$Styles_Styles$css = function () {
 														function (x, y) {
 															return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 														}),
-													_user$project$Styles_Classes$Neutral,
+													_user$project$Styles_Classes$Wrong,
 													{
 														ctor: '::',
-														_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.neutral),
+														_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.wrong.value),
 														_1: {ctor: '[]'}
 													}),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: A2(
+														F2(
+															function (x, y) {
+																return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+															}),
+														_user$project$Styles_Classes$Correct,
+														{
+															ctor: '::',
+															_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.correct.value),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															F2(
+																function (x, y) {
+																	return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+																}),
+															_user$project$Styles_Classes$Neutral,
+															{
+																ctor: '::',
+																_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.neutral.value),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																F2(
+																	function (x, y) {
+																		return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+																	}),
+																_user$project$Styles_Classes$RingContent,
+																{
+																	ctor: '::',
+																	_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
+																		_1: {
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$top(_rtfeldman$elm_css$Css$zero),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$left(_rtfeldman$elm_css$Css$zero),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$height(
+																						_rtfeldman$elm_css$Css$pct(100)),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$width(
+																							_rtfeldman$elm_css$Css$pct(100)),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$alignItems(_rtfeldman$elm_css$Css$center),
+																								_1: {
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
+																									_1: {ctor: '[]'}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	F2(
+																		function (x, y) {
+																			return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+																		}),
+																	_user$project$Styles_Classes$AnswerInput,
+																	{
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Css$border(
+																			_rtfeldman$elm_css$Css$px(1)),
+																		_1: {
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$borderColor(colors.background),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$color(colors.panel),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$width(
+																						_rtfeldman$elm_css$Css$rem(10)),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
 											}
 										}
 									}
@@ -15507,17 +15656,37 @@ var _user$project$ScoreRing$makeCircle = F4(
 			},
 			{ctor: '[]'});
 	});
-var _user$project$ScoreRing$circles = F2(
-	function (model, radius) {
+var _user$project$ScoreRing$circleFolder = F4(
+	function (radius, count, m, l) {
+		var cls = _user$project$Model$isCorrect(m) ? _user$project$Styles_Classes$Correct : (_user$project$Model$isWrong(m) ? _user$project$Styles_Classes$Wrong : _user$project$Styles_Classes$Neutral);
 		return {
 			ctor: '::',
-			_0: A4(_user$project$ScoreRing$makeCircle, 1, 1, radius, _user$project$Styles_Classes$Correct),
-			_1: {
-				ctor: '::',
-				_0: A4(_user$project$ScoreRing$makeCircle, 33, 100, radius, _user$project$Styles_Classes$Wrong),
-				_1: {ctor: '[]'}
-			}
+			_0: A4(
+				_user$project$ScoreRing$makeCircle,
+				_elm_lang$core$Basics$toFloat(
+					_elm_lang$core$List$length(l) + 1),
+				count,
+				radius,
+				cls),
+			_1: l
 		};
+	});
+var _user$project$ScoreRing$circles = F3(
+	function (model, radius, count) {
+		var _p1 = model.gameState;
+		if (_p1.ctor === 'Running') {
+			return A3(
+				_elm_lang$core$List$foldl,
+				A2(_user$project$ScoreRing$circleFolder, radius, count),
+				{ctor: '[]'},
+				_elm_lang$core$List$reverse(model.multiplications));
+		} else {
+			return {
+				ctor: '::',
+				_0: A4(_user$project$ScoreRing$makeCircle, 1, 1, radius, _user$project$Styles_Classes$Neutral),
+				_1: {ctor: '[]'}
+			};
+		}
 	});
 var _user$project$ScoreRing$scoreRing = function (model) {
 	var count = _elm_lang$core$List$length(model.multiplications);
@@ -15526,7 +15695,12 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 	var viewBoxSize = (2 * radius) + circleConstants.stroke;
 	return A2(
 		_elm_lang$html$Html$figure,
-		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$svg$Svg_Attributes$class(
+				_elm_lang$core$Basics$toString(_user$project$Styles_Classes$CircleFigure)),
+			_1: {ctor: '[]'}
+		},
 		{
 			ctor: '::',
 			_0: A2(
@@ -15563,7 +15737,7 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 								_1: {ctor: '[]'}
 							}
 						},
-						A2(_user$project$ScoreRing$circles, model, radius)),
+						A3(_user$project$ScoreRing$circles, model, radius, count)),
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
@@ -15589,6 +15763,162 @@ var _user$project$View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withName
 var _user$project$View$id = _user$project$View$_p0.id;
 var _user$project$View$class = _user$project$View$_p0.$class;
 var _user$project$View$classList = _user$project$View$_p0.classList;
+var _user$project$View$ringContent = function (model) {
+	var t = _user$project$Internationalization$getText(model.language);
+	var innerContent = function () {
+		var _p1 = model.gameState;
+		switch (_p1.ctor) {
+			case 'NotStarted':
+				return A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$href('#'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							t(_user$project$Translations_Types$Start)),
+						_1: {ctor: '[]'}
+					});
+			case 'Running':
+				var _p2 = model.multiplications;
+				if ((_p2.ctor === '::') && (_p2._0.ctor === '_Tuple3')) {
+					return A2(
+						_elm_lang$html$Html$form,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onSubmit(_user$project$Message$SubmitAnswer),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(_p2._0._0)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									t(_user$project$Translations_Types$MultiplicationSymbol)),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										_elm_lang$core$Basics$toString(_p2._0._1)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(' = '),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$input,
+												{
+													ctor: '::',
+													_0: _user$project$View$class(
+														{
+															ctor: '::',
+															_0: _user$project$Styles_Classes$AnswerInput,
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value(_p2._0._2),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onInput(_user$project$Message$NewAnswer),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						});
+				} else {
+					return A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{ctor: '[]'});
+				}
+			default:
+				return A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									t(_user$project$Translations_Types$Finished)),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$a,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$href('#'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										t(_user$project$Translations_Types$Restart)),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					});
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _user$project$View$class(
+				{
+					ctor: '::',
+					_0: _user$project$Styles_Classes$RingContent,
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{
+					ctor: '::',
+					_0: _user$project$View$class(
+						{
+							ctor: '::',
+							_0: _user$project$Styles_Classes$PassphraseText,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: innerContent,
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$View$view = function (model) {
 	var t = _user$project$Internationalization$getText(model.language);
 	return A2(
@@ -15600,7 +15930,7 @@ var _user$project$View$view = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$form,
+					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
 						_0: _user$project$View$class(
@@ -15609,11 +15939,7 @@ var _user$project$View$view = function (model) {
 								_0: _user$project$Styles_Classes$PassphrasePanel,
 								_1: {ctor: '[]'}
 							}),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onSubmit(_user$project$Message$SubmitAnswer),
-							_1: {ctor: '[]'}
-						}
+						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
@@ -15646,7 +15972,7 @@ var _user$project$View$view = function (model) {
 										_0: _user$project$View$class(
 											{
 												ctor: '::',
-												_0: 'panel-body',
+												_0: _user$project$Styles_Classes$PanelBody,
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
@@ -15656,10 +15982,7 @@ var _user$project$View$view = function (model) {
 										_0: _user$project$ScoreRing$scoreRing(model),
 										_1: {
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{ctor: '[]'},
-												{ctor: '[]'}),
+											_0: _user$project$View$ringContent(model),
 											_1: {ctor: '[]'}
 										}
 									}),
@@ -15702,26 +16025,26 @@ var _user$project$View$numberLi = function (content) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$View$oldNumber = function (_p1) {
-	var _p2 = _p1;
+var _user$project$View$oldNumber = function (_p3) {
+	var _p4 = _p3;
 	return _user$project$View$numberLi(
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(_p2._0)),
+				_elm_lang$core$Basics$toString(_p4._0)),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html$text(' · '),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(_p2._1)),
+						_elm_lang$core$Basics$toString(_p4._1)),
 					_1: {
 						ctor: '::',
 						_0: _elm_lang$html$Html$text(' = '),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p2._2),
+							_0: _elm_lang$html$Html$text(_p4._2),
 							_1: {ctor: '[]'}
 						}
 					}

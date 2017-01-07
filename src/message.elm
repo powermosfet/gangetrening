@@ -5,9 +5,9 @@ import Translations.Types exposing (Language)
 
 
 type Msg
-    = CreateMultiplications
-    | ChangeLanguage Language
+    = ChangeLanguage Language
     | NewMultiplications (List Multiplication)
     | ChangeMaximum Int
     | NewAnswer String
     | SubmitAnswer
+    | Start
