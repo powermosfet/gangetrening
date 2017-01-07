@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="no" manifest="manifest.cache">
+<html lang="no">
 
   <head>
     <meta charset="utf-8">
@@ -17,19 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
     <script>
-      const model = localStorage.getItem('model');
-      const startingModel = model ? JSON.parse(model) : null;
-
-      var elmApp;
-      try {
-        elmApp = Elm.Main.embed(document.getElementById('container'), startingModel);
-      } catch (ex) {
-        elmApp = Elm.Main.embed(document.getElementById('container'), null);
-      }
-
-      elmApp.ports.setStorage.subscribe(function (state) {
-        localStorage.setItem('model', JSON.stringify(state));
-      })
+      var elmApp = Elm.Main.embed(document.getElementById('container'));
     </script>
   </body>
 </html>

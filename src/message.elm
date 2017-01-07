@@ -1,11 +1,13 @@
 module Message exposing (Msg(..))
 
+import Model exposing (Multiplication)
+import Translations.Types exposing (Language)
+
 
 type Msg
-    = CreateNumbers
-    | ChangeLanguage String
-    | NewNumbers (List Int)
-    | NewInput Char
-    | ChangeMaxNum Int
+    = CreateMultiplications
+    | ChangeLanguage Language
+    | NewMultiplications (List Multiplication)
+    | ChangeMaximum Int
     | NewAnswer String
     | SubmitAnswer
