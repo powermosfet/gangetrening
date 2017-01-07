@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Html exposing (Html, h1, a, label, button, div, text, input, ul, li, form)
+import Html exposing (Html, h1, a, div, text, input, li, form)
 import Html.Attributes exposing (attribute, for, type_, value, checked, href)
 import Html.Attributes as H exposing (min, max)
 import Html.Events exposing (onClick, onInput, onSubmit)
@@ -79,52 +79,3 @@ ringContent model =
     in
         div [ class [ Cls.RingContent ] ]
             [ h1 [ class [ Cls.PassphraseText ] ] [ innerContent ] ]
-
-
-numberLi : List (Html M.Msg) -> Html M.Msg
-numberLi content =
-    li [ class [ Cls.PassphraseListItem ] ]
-        [ h1 [ class [ Cls.PassphraseText ] ]
-            content
-        ]
-
-
-oldNumber : Multiplication -> Html M.Msg
-oldNumber ( f1, f2, answer ) =
-    numberLi
-        [ text <| toString f1
-        , text " · "
-        , text <| toString f2
-        , text " = "
-        , text answer
-        ]
-
-
-
--- currentNumbers : Model -> Html Msg
--- currentNumbers model =
---     let
---         ( f1, f2, answer ) =
---             model.current
---     in
---         numberLi
---             [ text <| toString f1
---             , text " · "
---             , text <| toString f2
---             , text " = "
---             , input
---                 [ class <| inputCssClasses model.wrongAnswer
---                 , value answer
---                 , onInput NewAnswer
---                 , autofocus True
---                 ]
---                 []
---             ]
---
-
-
-inputCssClasses wrongAnswer =
-    if wrongAnswer then
-        [ Cls.PassphraseInput, Cls.WrongAnswer ]
-    else
-        [ Cls.PassphraseInput ]

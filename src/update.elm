@@ -1,11 +1,9 @@
 port module Update exposing (..)
 
 import Html exposing (Attribute)
-import Html.Events exposing (on, keyCode)
 import Message exposing (Msg(..))
-import Model exposing (Model, Multiplication, isWrong, isCorrect, GameState(..))
+import Model exposing (Model, isCorrect, Multiplication, GameState(..))
 import Commands exposing (createShuffledMultiplications)
-import Platform.Cmd as Cmd exposing (batch)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
