@@ -15037,7 +15037,7 @@ var _user$project$Styles_Styles$css = function () {
 																				_1: {
 																					ctor: '::',
 																					_0: _rtfeldman$elm_css$Css$width(
-																						_rtfeldman$elm_css$Css$rem(10)),
+																						_rtfeldman$elm_css$Css$rem(7)),
 																					_1: {ctor: '[]'}
 																				}
 																			}
@@ -15744,21 +15744,6 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 		});
 };
 
-var _user$project$View$inputCssClasses = function (wrongAnswer) {
-	return wrongAnswer ? {
-		ctor: '::',
-		_0: _user$project$Styles_Classes$PassphraseInput,
-		_1: {
-			ctor: '::',
-			_0: _user$project$Styles_Classes$WrongAnswer,
-			_1: {ctor: '[]'}
-		}
-	} : {
-		ctor: '::',
-		_0: _user$project$Styles_Classes$PassphraseInput,
-		_1: {ctor: '[]'}
-	};
-};
 var _user$project$View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
 var _user$project$View$id = _user$project$View$_p0.id;
 var _user$project$View$class = _user$project$View$_p0.$class;
@@ -15991,64 +15976,6 @@ var _user$project$View$view = function (model) {
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$View$numberLi = function (content) {
-	return A2(
-		_elm_lang$html$Html$li,
-		{
-			ctor: '::',
-			_0: _user$project$View$class(
-				{
-					ctor: '::',
-					_0: _user$project$Styles_Classes$PassphraseListItem,
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{
-					ctor: '::',
-					_0: _user$project$View$class(
-						{
-							ctor: '::',
-							_0: _user$project$Styles_Classes$PassphraseText,
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				},
-				content),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$View$oldNumber = function (_p3) {
-	var _p4 = _p3;
-	return _user$project$View$numberLi(
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(_p4._0)),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(' · '),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(_p4._1)),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(' = '),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p4._2),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
 			}
 		});
 };
