@@ -4,6 +4,8 @@ import Html exposing (Attribute)
 import Message exposing (Msg(..))
 import Model exposing (Model, isCorrect, Multiplication, GameState(..))
 import Commands exposing (createShuffledMultiplications)
+import Routing exposing (parseLocation)
+import Init exposing (init)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -13,6 +15,17 @@ update msg model =
             ( m, Cmd.none )
     in
         case msg of
+            ChangeLocation loc ->
+                let
+                    ( initModel, _ ) =
+                        init loc
+                in
+                    { model
+                        | language = initModel.language
+                        , maximum = initModel.maximum
+                    }
+                        |> nop
+
             Start ->
                 ( model, createShuffledMultiplications model )
 
