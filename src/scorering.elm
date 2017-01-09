@@ -1,17 +1,12 @@
 module ScoreRing exposing (scoreRing)
 
-import Html exposing (Html, nav, h1, label, button, div, span, text, input, a, ul, li, figure)
-import Html.Attributes exposing (attribute, for, type_, value, checked, href, style)
-import Html.Attributes as H exposing (min, max)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, div, figure)
+import Html.Attributes exposing (style)
 import Svg exposing (svg, circle)
 import Svg.Attributes exposing (r, cx, cy, class, viewBox)
 import Message exposing (Msg(..))
 import Model exposing (Model, isCorrect, isWrong)
-import Internationalization
-import Model exposing (Multiplication, GameState(..))
-import Translations.Types exposing (..)
-import Html.CssHelpers as Hlp
+import Model exposing (GameState(..))
 import Styles.Classes as Cls
 import Styles.Constants as C
 
@@ -50,8 +45,11 @@ circles model radius count =
                 |> List.reverse
                 |> List.foldl (circleFolder radius count) []
 
-        _ ->
+        NotStarted ->
             [ makeCircle 1 1 radius Cls.Neutral ]
+
+        Finished ->
+            [ makeCircle 1 1 radius Cls.Correct ]
 
 
 circleFolder radius count m l =

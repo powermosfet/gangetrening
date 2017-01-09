@@ -8,42 +8,61 @@ import Commands exposing (createShuffledMultiplications)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        Start ->
-            ( model, createShuffledMultiplications model )
+    let
+        nop m =
+            ( m, Cmd.none )
+    in
+        case msg of
+            Start ->
+                ( model, createShuffledMultiplications model )
 
-        ChangeLanguage lang ->
-            ( { model | language = lang, gameState = NotStarted }, Cmd.none )
+            ChangeLanguage lang ->
+                { model
+                    | language = lang
+                    , gameState = NotStarted
+                }
+                    |> nop
 
-        NewMultiplications mults ->
-            ( { model | multiplications = mults, gameState = Running }, Cmd.none )
-
-        ChangeMaximum n ->
-            ( { model | maximum = n, gameState = NotStarted }
-            , Cmd.none
-            )
-
-        NewAnswer newAnswer ->
-            ( { model | multiplications = updateFirst (changeAnswer newAnswer) model.multiplications }, Cmd.none )
-
-        SubmitAnswer ->
-            let
-                mults =
-                    rotate model.multiplications
-                        |> rotateUntil (not << isCorrect)
-
-                gameState =
-                    if List.all isCorrect mults then
-                        Finished
-                    else
-                        model.gameState
-            in
-                ( { model
+            NewMultiplications mults ->
+                { model
                     | multiplications = mults
-                    , gameState = gameState
-                  }
-                , Cmd.none
-                )
+                    , gameState = Running
+                }
+                    |> nop
+
+            ChangeMaximum n ->
+                { model
+                    | maximum = n
+                    , gameState = NotStarted
+                }
+                    |> nop
+
+            NewAnswer newAnswer ->
+                { model | multiplications = updateFirst (changeAnswer newAnswer) model.multiplications } |> nop
+
+            SubmitAnswer ->
+                let
+                    mults =
+                        rotate model.multiplications
+                            |> rotateUntil (not << isCorrect)
+
+                    gameState =
+                        model.gameState
+                            |> changeIf (List.all isCorrect mults) Finished
+                in
+                    { model
+                        | multiplications = mults
+                        , gameState = gameState
+                    }
+                        |> nop
+
+
+changeIf : Bool -> a -> a -> a
+changeIf test changed original =
+    if test then
+        changed
+    else
+        original
 
 
 rotateUntil : (a -> Bool) -> List a -> List a

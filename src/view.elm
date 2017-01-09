@@ -1,11 +1,10 @@
 module View exposing (view)
 
-import Html exposing (Html, h1, a, div, text, input, li, form)
-import Html.Attributes exposing (attribute, for, type_, value, checked, href)
-import Html.Attributes as H exposing (min, max)
+import Html exposing (Html, h1, a, div, text, input, form)
+import Html.Attributes exposing (value, href)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Message as M
-import Model exposing (Multiplication, Model, GameState(..))
+import Model exposing (Model, GameState(..))
 import Internationalization
 import Translations.Types as T
 import Html.CssHelpers as Hlp

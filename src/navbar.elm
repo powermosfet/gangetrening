@@ -1,9 +1,8 @@
 module Navbar exposing (navbar)
 
-import Html exposing (Html, nav, h1, label, button, div, span, text, input, a, ul, li)
-import Html.Attributes exposing (attribute, for, type_, value, checked, href)
-import Html.Attributes as H exposing (min, max)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, nav, button, div, span, text, a, ul, li)
+import Html.Attributes exposing (attribute, type_, href)
+import Html.Events exposing (onClick)
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import Internationalization

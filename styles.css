@@ -71,5 +71,6 @@ body {
     border: 1px;
     border-color: #edeff0;
     color: #000000;
-    width: 7rem;
+    width: 10rem;
+    padding: 0.3rem;
 }

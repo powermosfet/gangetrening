@@ -82,6 +82,7 @@ css =
                 [ border <| px 1
                 , borderColor colors.background
                 , color colors.panel
-                , width <| Css.rem 7
+                , width <| Css.rem 10
+                , padding margins.small
                 ]
             ]
