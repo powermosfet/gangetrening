@@ -7,9 +7,7 @@ import Navigation exposing (Location)
 
 type Msg
     = ChangeLocation Location
-    | ChangeLanguage Language
     | NewMultiplications (List Multiplication)
-    | ChangeMaximum Int
     | NewAnswer String
     | SubmitAnswer
     | Start

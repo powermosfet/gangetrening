@@ -23,30 +23,17 @@ update msg model =
                     { model
                         | language = initModel.language
                         , maximum = initModel.maximum
+                        , gameState = NotStarted
                     }
                         |> nop
 
             Start ->
                 ( model, createShuffledMultiplications model )
 
-            ChangeLanguage lang ->
-                { model
-                    | language = lang
-                    , gameState = NotStarted
-                }
-                    |> nop
-
             NewMultiplications mults ->
                 { model
                     | multiplications = mults
                     , gameState = Running
-                }
-                    |> nop
-
-            ChangeMaximum n ->
-                { model
-                    | maximum = n
-                    , gameState = NotStarted
                 }
                     |> nop
 

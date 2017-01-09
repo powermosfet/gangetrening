@@ -19,6 +19,23 @@ matchers =
         ]
 
 
+toUrl : Route -> String
+toUrl route =
+    case route of
+        SettingsRoute lang max ->
+            let
+                sLang =
+                    lang |> toString |> String.toLower
+
+                sMax =
+                    max |> toString
+            in
+                "#/" ++ sLang ++ "/" ++ sMax
+
+        _ ->
+            "#"
+
+
 parseLocation : Location -> Route
 parseLocation location =
     case (parseHash matchers location) of

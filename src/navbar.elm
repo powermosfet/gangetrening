@@ -10,10 +10,16 @@ import Translations.Types exposing (..)
 import Html.CssHelpers as Hlp
 import Styles.Styles as Styles
 import Styles.Classes as Cls
+import Routing
 
 
 { id, class, classList } =
     Hlp.withNamespace ""
+
+
+toUrl lang max =
+    Routing.SettingsRoute lang max
+        |> Routing.toUrl
 
 
 navbar : Model -> Html Msg
@@ -69,7 +75,7 @@ navbar model =
                             , ul
                                 [ class [ "dropdown-menu" ] ]
                                 [ li []
-                                    (List.map maximumSelector [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
+                                    (List.map (maximumSelector model.language) [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
                                 ]
                             ]
                         , li
@@ -88,8 +94,8 @@ navbar model =
                             , ul
                                 [ class [ "dropdown-menu" ] ]
                                 [ li []
-                                    [ a [ href "#", onClick (ChangeLanguage Nor) ] [ text "Norsk" ]
-                                    , a [ href "#", onClick (ChangeLanguage Eng) ] [ text "English" ]
+                                    [ a [ href (toUrl Nor model.maximum) ] [ text "Norsk" ]
+                                    , a [ href (toUrl Eng model.maximum) ] [ text "English" ]
                                     ]
                                 ]
                             ]
@@ -99,5 +105,5 @@ navbar model =
             ]
 
 
-maximumSelector n =
-    a [ href "#", onClick (ChangeMaximum n) ] [ text (toString n) ]
+maximumSelector lang n =
+    a [ href (toUrl lang n) ] [ text (toString n) ]

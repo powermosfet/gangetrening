@@ -47,7 +47,7 @@ ringContent model =
         innerContent =
             case model.gameState of
                 NotStarted ->
-                    a [ href "#", onClick M.Start ] [ text (t T.Start) ]
+                    a [ onClick M.Start ] [ text (t T.Start) ]
 
                 Running ->
                     case model.multiplications of
@@ -73,7 +73,7 @@ ringContent model =
                 Finished ->
                     div []
                         [ div [] [ text (t T.Finished) ]
-                        , a [ href "#", onClick M.Start ] [ text (t T.Restart) ]
+                        , a [ onClick M.Start ] [ text (t T.Restart) ]
                         ]
     in
         div [ class [ Cls.RingContent ] ]
