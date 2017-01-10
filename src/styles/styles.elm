@@ -82,9 +82,9 @@ css =
                 , textAlign center
                 ]
             , (.) Class.AnswerInput
-                [ border <| px 1
-                , borderColor colors.background
-                , color colors.panel
+                [ border3 (px 1) solid colors.background
+                , color colors.background
+                , backgroundColor transparent
                 , width <| Css.rem 10
                 , padding margins.small
                 ]

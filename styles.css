@@ -72,9 +72,9 @@ body {
 }
 
 .AnswerInput {
-    border: 1px;
-    border-color: #edeff0;
-    color: #000000;
+    border: 1px solid #edeff0;
+    color: #edeff0;
+    background-color: transparent;
     width: 10rem;
     padding: 0.3rem;
 }

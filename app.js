@@ -20165,14 +20165,17 @@ var _user$project$Styles_Styles$css = function () {
 																		_user$project$Styles_Classes$AnswerInput,
 																		{
 																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$border(
-																				_rtfeldman$elm_css$Css$px(1)),
+																			_0: A3(
+																				_rtfeldman$elm_css$Css$border3,
+																				_rtfeldman$elm_css$Css$px(1),
+																				_rtfeldman$elm_css$Css$solid,
+																				colors.background),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$borderColor(colors.background),
+																				_0: _rtfeldman$elm_css$Css$color(colors.background),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$color(colors.panel),
+																					_0: _rtfeldman$elm_css$Css$backgroundColor(_rtfeldman$elm_css$Css$transparent),
 																					_1: {
 																						ctor: '::',
 																						_0: _rtfeldman$elm_css$Css$width(
