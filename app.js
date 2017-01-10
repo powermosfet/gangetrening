@@ -20179,7 +20179,7 @@ var _user$project$Styles_Styles$css = function () {
 																					_1: {
 																						ctor: '::',
 																						_0: _rtfeldman$elm_css$Css$width(
-																							_rtfeldman$elm_css$Css$rem(10)),
+																							_rtfeldman$elm_css$Css$rem(7)),
 																						_1: {
 																							ctor: '::',
 																							_0: _rtfeldman$elm_css$Css$padding(margins.small),

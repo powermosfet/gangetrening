@@ -85,7 +85,7 @@ css =
                 [ border3 (px 1) solid colors.background
                 , color colors.background
                 , backgroundColor transparent
-                , width <| Css.rem 10
+                , width <| Css.rem 7
                 , padding margins.small
                 ]
             ]
