@@ -89,6 +89,7 @@ css =
             , (.) Class.TextButton
                 [ border zero
                 , backgroundColor transparent
+                , textDecoration underline
                 , color colors.background
                 ]
             ]

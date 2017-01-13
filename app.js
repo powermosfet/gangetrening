@@ -20417,8 +20417,12 @@ var _user$project$Styles_Styles$css = function () {
 																				_0: _rtfeldman$elm_css$Css$backgroundColor(_rtfeldman$elm_css$Css$transparent),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$color(colors.background),
-																					_1: {ctor: '[]'}
+																					_0: _rtfeldman$elm_css$Css$textDecoration(_rtfeldman$elm_css$Css$underline),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$color(colors.background),
+																						_1: {ctor: '[]'}
+																					}
 																				}
 																			}
 																		}),
