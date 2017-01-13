@@ -16,3 +16,4 @@ type CssClasses
     | Neutral
     | RingContent
     | AnswerInput
+    | TextButton

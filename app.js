@@ -20093,6 +20093,7 @@ var _user$project$Styles_Constants$colors = {
 };
 var _user$project$Styles_Constants$gangetrening = 'Gangetrening';
 
+var _user$project$Styles_Classes$TextButton = {ctor: 'TextButton'};
 var _user$project$Styles_Classes$AnswerInput = {ctor: 'AnswerInput'};
 var _user$project$Styles_Classes$RingContent = {ctor: 'RingContent'};
 var _user$project$Styles_Classes$Neutral = {ctor: 'Neutral'};
@@ -20400,7 +20401,29 @@ var _user$project$Styles_Styles$css = function () {
 																			}
 																		}
 																	}),
-																_1: {ctor: '[]'}
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		F2(
+																			function (x, y) {
+																				return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+																			}),
+																		_user$project$Styles_Classes$TextButton,
+																		{
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$border(_rtfeldman$elm_css$Css$zero),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$backgroundColor(_rtfeldman$elm_css$Css$transparent),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$color(colors.background),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}),
+																	_1: {ctor: '[]'}
+																}
 															}
 														}
 													}
@@ -21015,10 +21038,15 @@ var _user$project$View$ringContent = function (model) {
 		switch (_p0.ctor) {
 			case 'NotStarted':
 				return A2(
-					_elm_lang$html$Html$a,
+					_elm_lang$html$Html$button,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$href(''),
+						_0: _user$project$View$class_(
+							{
+								ctor: '::',
+								_0: _user$project$Styles_Classes$TextButton,
+								_1: {ctor: '[]'}
+							}),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
@@ -21109,10 +21137,15 @@ var _user$project$View$ringContent = function (model) {
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$a,
+								_elm_lang$html$Html$button,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$href(''),
+									_0: _user$project$View$class_(
+										{
+											ctor: '::',
+											_0: _user$project$Styles_Classes$TextButton,
+											_1: {ctor: '[]'}
+										}),
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
@@ -21171,58 +21204,79 @@ var _user$project$View$view = function (model) {
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _user$project$Navbar$navbar(model),
+			_0: A3(
+				_elm_lang$html$Html$node,
+				'style',
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						function (_) {
+							return _.css;
+						}(
+							_rtfeldman$elm_css$Css$compile(
+								{
+									ctor: '::',
+									_0: _user$project$Styles_Styles$css,
+									_1: {ctor: '[]'}
+								}))),
+					_1: {ctor: '[]'}
+				}),
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _user$project$View$class_(
-							{
-								ctor: '::',
-								_0: _user$project$Styles_Classes$PassphrasePanel,
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('panel panel-default col-md-12'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _user$project$View$class_(
-											{
-												ctor: '::',
-												_0: _user$project$Styles_Classes$PanelBody,
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _user$project$ScoreRing$scoreRing(model),
-										_1: {
+				_0: _user$project$Navbar$navbar(model),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _user$project$View$class_(
+								{
+									ctor: '::',
+									_0: _user$project$Styles_Classes$PassphrasePanel,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('panel panel-default col-md-12'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
 											ctor: '::',
-											_0: _user$project$View$ringContent(model),
+											_0: _user$project$View$class_(
+												{
+													ctor: '::',
+													_0: _user$project$Styles_Classes$PanelBody,
+													_1: {ctor: '[]'}
+												}),
 											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$ScoreRing$scoreRing(model),
+											_1: {
+												ctor: '::',
+												_0: _user$project$View$ringContent(model),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };

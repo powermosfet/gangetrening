@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Html exposing (Html, h1, a, div, text, input, form)
+import Html exposing (Html, h1, button, div, text, input, form, node)
 import Html.Attributes exposing (class, value, href)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Message as M
@@ -8,7 +8,8 @@ import Model exposing (Model, GameState(..))
 import Internationalization
 import Translations.Types as T
 import Html.CssHelpers as Hlp
-import Styles.Styles as Styles
+import Css
+import Styles.Styles as S
 import Styles.Classes as Cls
 import Styles.Constants
 import Navbar
@@ -30,7 +31,8 @@ view model =
             Internationalization.getText model.language
     in
         div []
-            [ Navbar.navbar model
+            [ node "style" [] [ Css.compile [ S.css ] |> .css |> text ]
+            , Navbar.navbar model
             , div
                 [ class_ [ Cls.PassphrasePanel ]
                 ]
@@ -52,7 +54,7 @@ ringContent model =
         innerContent =
             case model.gameState of
                 NotStarted ->
-                    a [ href "", onClick M.Start ] [ text (t T.Start) ]
+                    button [ class_ [ Cls.TextButton ], onClick M.Start ] [ text (t T.Start) ]
 
                 Running ->
                     case model.multiplications of
@@ -78,7 +80,7 @@ ringContent model =
                 Finished ->
                     div []
                         [ div [] [ text (t T.Finished) ]
-                        , a [ href "", onClick M.Start ] [ text (t T.Restart) ]
+                        , button [ class_ [ Cls.TextButton ], onClick M.Start ] [ text (t T.Restart) ]
                         ]
     in
         div [ class_ [ Cls.RingContent ] ]

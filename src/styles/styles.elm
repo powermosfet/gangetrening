@@ -86,4 +86,9 @@ css =
                 , width <| Css.rem 7
                 , padding margins.small
                 ]
+            , (.) Class.TextButton
+                [ border zero
+                , backgroundColor transparent
+                , color colors.background
+                ]
             ]
