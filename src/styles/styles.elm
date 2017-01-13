@@ -1,7 +1,8 @@
 module Styles.Styles exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (div, body, a)
+import Css.Elements exposing (div, body)
+import Css.Namespace exposing (namespace)
 import Styles.Constants
 import Styles.Classes as Class
 
@@ -17,11 +18,8 @@ css =
         margins =
             Styles.Constants.margins
     in
-        stylesheet
-            [ a
-                [ cursor pointer
-                ]
-            , body
+        (stylesheet << namespace Styles.Constants.gangetrening)
+            [ body
                 [ backgroundColor colors.background
                 ]
             , (.) Class.PassphrasePanel

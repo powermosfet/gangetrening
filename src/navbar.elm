@@ -1,20 +1,14 @@
 module Navbar exposing (navbar)
 
 import Html exposing (Html, nav, button, div, span, text, a, ul, li)
-import Html.Attributes exposing (attribute, type_, href)
+import Html.Attributes exposing (id, class, attribute, type_, href)
 import Html.Events exposing (onClick)
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import Internationalization
 import Translations.Types exposing (..)
 import Html.CssHelpers as Hlp
-import Styles.Styles as Styles
-import Styles.Classes as Cls
 import Routing
-
-
-{ id, class, classList } =
-    Hlp.withNamespace ""
 
 
 toUrl lang max =
@@ -29,40 +23,40 @@ navbar model =
             Internationalization.getText model.language
     in
         nav
-            [ class [ "navbar", "navbar-default" ] ]
+            [ class "navbar navbar-default" ]
             [ div
-                [ class [ "container-fluid" ] ]
+                [ class "container-fluid" ]
                 [ div
-                    [ class [ "navbar-header" ] ]
+                    [ class "navbar-header" ]
                     [ button
                         [ type_ "button"
-                        , class [ "navbar-toggle", "collapsed" ]
+                        , class "navbar-toggle collapsed"
                         , attribute "data-toggle" "collapse"
                         , attribute "data-target" "#bs-navbar-collapsible"
                         , attribute "aria-expanded" "false"
                         ]
-                        [ span [ class [ "sr-only" ] ] [ text "Toggle navigation" ]
-                        , span [ class [ "icon-bar" ] ] []
-                        , span [ class [ "icon-bar" ] ] []
-                        , span [ class [ "icon-bar" ] ] []
+                        [ span [ class "sr-only" ] [ text "Toggle navigation" ]
+                        , span [ class "icon-bar" ] []
+                        , span [ class "icon-bar" ] []
+                        , span [ class "icon-bar" ] []
                         ]
                     , a
-                        [ class [ "navbar-brand" ]
-                        , href "#"
+                        [ class "navbar-brand"
+                        , href ""
                         ]
                         [ text (t Title) ]
                     ]
                 , div
-                    [ class [ "collapse", "navbar-collapse" ]
+                    [ class "collapse navbar-collapse"
                     , id "bs-navbar-collapsible"
                     ]
                     [ ul
-                        [ class [ "nav", "navbar-nav", "navbar-right" ] ]
+                        [ class "nav navbar-nav navbar-right" ]
                         [ li
-                            [ class [ "dropdown" ] ]
+                            [ class "dropdown" ]
                             [ a
                                 [ href "#"
-                                , class [ "dropdown-toggle" ]
+                                , class "dropdown-toggle"
                                 , attribute "data-toggle" "dropdown"
                                 , attribute "role" "button"
                                 , attribute "aria-haspopup" "true"
@@ -70,29 +64,29 @@ navbar model =
                                 ]
                                 [ text (t CurrentMaximum)
                                 , text <| toString model.maximum
-                                , span [ class [ "caret" ] ] []
+                                , span [ class "caret" ] []
                                 ]
                             , ul
-                                [ class [ "dropdown-menu" ] ]
+                                [ class "dropdown-menu" ]
                                 [ li []
                                     (List.map (maximumSelector model.language) [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
                                 ]
                             ]
                         , li
-                            [ class [ "dropdown" ] ]
+                            [ class "dropdown" ]
                             [ a
-                                [ href "#"
-                                , class [ "dropdown-toggle" ]
+                                [ href ""
+                                , class "dropdown-toggle"
                                 , attribute "data-toggle" "dropdown"
                                 , attribute "role" "button"
                                 , attribute "aria-haspopup" "true"
                                 , attribute "aria-expanded" "false"
                                 ]
                                 [ text (t CurrentLanguage)
-                                , span [ class [ "caret" ] ] []
+                                , span [ class "caret" ] []
                                 ]
                             , ul
-                                [ class [ "dropdown-menu" ] ]
+                                [ class "dropdown-menu" ]
                                 [ li []
                                     [ a [ href (toUrl Nor model.maximum) ] [ text "Norsk" ]
                                     , a [ href (toUrl Eng model.maximum) ] [ text "English" ]

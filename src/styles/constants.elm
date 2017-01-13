@@ -3,6 +3,10 @@ module Styles.Constants exposing (..)
 import Css exposing (..)
 
 
+gangetrening =
+    "Gangetrening"
+
+
 colors =
     { background = hex "edeff0"
     , panel = hex "000000"

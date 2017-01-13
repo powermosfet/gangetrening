@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Html exposing (Html, h1, a, div, text, input, form)
-import Html.Attributes exposing (value, href)
+import Html.Attributes exposing (class, value, href)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Message as M
 import Model exposing (Model, GameState(..))
@@ -10,12 +10,17 @@ import Translations.Types as T
 import Html.CssHelpers as Hlp
 import Styles.Styles as Styles
 import Styles.Classes as Cls
+import Styles.Constants
 import Navbar
 import ScoreRing
 
 
-{ id, class, classList } =
-    Hlp.withNamespace ""
+helpers =
+    Hlp.withNamespace Styles.Constants.gangetrening
+
+
+class_ =
+    helpers.class
 
 
 view : Model -> Html M.Msg
@@ -27,10 +32,10 @@ view model =
         div []
             [ Navbar.navbar model
             , div
-                [ class [ Cls.PassphrasePanel ]
+                [ class_ [ Cls.PassphrasePanel ]
                 ]
-                [ div [ class [ "panel", "panel-default", "col-md-12" ] ]
-                    [ div [ class [ Cls.PanelBody ] ]
+                [ div [ class "panel panel-default col-md-12" ]
+                    [ div [ class_ [ Cls.PanelBody ] ]
                         [ ScoreRing.scoreRing model
                         , (ringContent model)
                         ]
@@ -47,7 +52,7 @@ ringContent model =
         innerContent =
             case model.gameState of
                 NotStarted ->
-                    a [ onClick M.Start ] [ text (t T.Start) ]
+                    a [ href "", onClick M.Start ] [ text (t T.Start) ]
 
                 Running ->
                     case model.multiplications of
@@ -60,7 +65,7 @@ ringContent model =
                                 , text <| toString f2
                                 , text " = "
                                 , input
-                                    [ class [ Cls.AnswerInput ]
+                                    [ class_ [ Cls.AnswerInput ]
                                     , value ans
                                     , onInput M.NewAnswer
                                     ]
@@ -73,8 +78,8 @@ ringContent model =
                 Finished ->
                     div []
                         [ div [] [ text (t T.Finished) ]
-                        , a [ onClick M.Start ] [ text (t T.Restart) ]
+                        , a [ href "", onClick M.Start ] [ text (t T.Restart) ]
                         ]
     in
-        div [ class [ Cls.RingContent ] ]
-            [ h1 [ class [ Cls.PassphraseText ] ] [ innerContent ] ]
+        div [ class_ [ Cls.RingContent ] ]
+            [ h1 [ class_ [ Cls.PassphraseText ] ] [ innerContent ] ]

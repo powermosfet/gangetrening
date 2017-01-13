@@ -9,6 +9,16 @@ import Model exposing (Model, isCorrect, isWrong)
 import Model exposing (GameState(..))
 import Styles.Classes as Cls
 import Styles.Constants as C
+import Html.CssHelpers as Hlp
+
+
+class_ =
+    List.map
+        (toString
+            >> ((++) C.gangetrening)
+        )
+        >> String.join " "
+        >> class
 
 
 scoreRing : Model -> Html Msg
@@ -26,11 +36,10 @@ scoreRing model =
         viewBoxSize =
             2 * radius + circleConstants.stroke
     in
-        figure [ class <| toString Cls.CircleFigure ]
+        figure [ class_ [ Cls.CircleFigure ] ]
             [ div []
                 [ svg
-                    [ class "Chart"
-                    , viewBox <| spaceList [ 0, 0, viewBoxSize, viewBoxSize ]
+                    [ viewBox <| spaceList [ 0, 0, viewBoxSize, viewBoxSize ]
                     ]
                     (circles model radius count)
                 ]
@@ -86,7 +95,7 @@ makeCircle n total radius cls =
             , cx <| toString centerOffset
             , cy <| toString centerOffset
             , style [ ( "stroke-dasharray", commaList [ (n * arc), circumference ] ) ]
-            , class ("Circle " ++ (toString cls))
+            , class_ [ Cls.Circle, cls ]
             ]
             []
 

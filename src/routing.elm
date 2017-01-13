@@ -21,19 +21,19 @@ matchers =
 
 toUrl : Route -> String
 toUrl route =
-    case route of
-        SettingsRoute lang max ->
-            let
-                sLang =
-                    lang |> toString |> String.toLower
+    let
+        parts =
+            case route of
+                SettingsRoute lang max ->
+                    [ lang |> toString |> String.toLower
+                    , max |> toString
+                    ]
 
-                sMax =
-                    max |> toString
-            in
-                "#/" ++ sLang ++ "/" ++ sMax
-
-        _ ->
-            "#"
+                _ ->
+                    []
+    in
+        ("#" :: parts)
+            |> String.join "/"
 
 
 parseLocation : Location -> Route
@@ -46,7 +46,7 @@ parseLocation location =
             NotFoundRoute
 
 
-parseLang : String -> Result.Result String Language
+parseLang : String -> Result String Language
 parseLang lang =
     case lang of
         "nor" ->

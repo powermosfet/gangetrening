@@ -19419,6 +19419,215 @@ var _rtfeldman$elm_css$Css_Elements$option = _rtfeldman$elm_css$Css_Elements$typ
 var _rtfeldman$elm_css$Css_Elements$progress = _rtfeldman$elm_css$Css_Elements$typeSelector('progress');
 var _rtfeldman$elm_css$Css_Elements$select = _rtfeldman$elm_css$Css_Elements$typeSelector('select');
 
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToProperty = F2(
+	function (name, property) {
+		var _p0 = property.key;
+		if (_p0 === 'animation-name') {
+			return _elm_lang$core$Native_Utils.update(
+				property,
+				{
+					value: A2(_elm_lang$core$Basics_ops['++'], name, property.value)
+				});
+		} else {
+			return property;
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable = F2(
+	function (name, selector) {
+		var _p1 = selector;
+		switch (_p1.ctor) {
+			case 'ClassSelector':
+				return _rtfeldman$elm_css$Css_Structure$ClassSelector(
+					A2(_elm_lang$core$Basics_ops['++'], name, _p1._0));
+			case 'IdSelector':
+				return _rtfeldman$elm_css$Css_Structure$IdSelector(_p1._0);
+			default:
+				return _rtfeldman$elm_css$Css_Structure$PseudoClassSelector(_p1._0);
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSequence = F2(
+	function (name, sequence) {
+		var _p2 = sequence;
+		switch (_p2.ctor) {
+			case 'TypeSelectorSequence':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$TypeSelectorSequence,
+					_p2._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._1));
+			case 'UniversalSelectorSequence':
+				return _rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._0));
+			default:
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$CustomSelector,
+					_p2._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._1));
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector = F2(
+	function (name, _p3) {
+		var _p4 = _p3;
+		var apply = _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSequence(name);
+		return A3(
+			_rtfeldman$elm_css$Css_Structure$Selector,
+			apply(_p4._0),
+			A2(
+				_elm_lang$core$List$map,
+				function (_p5) {
+					var _p6 = _p5;
+					return {
+						ctor: '_Tuple2',
+						_0: _p6._0,
+						_1: apply(_p6._1)
+					};
+				},
+				_p4._1),
+			_p4._2);
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin = F2(
+	function (name, mixin) {
+		var _p7 = mixin;
+		switch (_p7.ctor) {
+			case 'AppendProperty':
+				return _rtfeldman$elm_css$Css_Preprocess$AppendProperty(
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToProperty, name, _p7._0));
+			case 'ExtendSelector':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$ExtendSelector,
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable, name, _p7._0),
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			case 'NestSnippet':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$NestSnippet,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet(name),
+						_p7._1));
+			case 'WithPseudoElement':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$WithPseudoElement,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			case 'WithMedia':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$WithMedia,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			default:
+				return _rtfeldman$elm_css$Css_Preprocess$ApplyMixins(
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._0));
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet = F2(
+	function (name, _p8) {
+		var _p9 = _p8;
+		return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration(name),
+				_p9._0));
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration = F2(
+	function (name, declaration) {
+		var _p10 = declaration;
+		switch (_p10.ctor) {
+			case 'StyleBlockDeclaration':
+				return _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration(
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock, name, _p10._0));
+			case 'MediaRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$MediaRule,
+					_p10._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock(name),
+						_p10._1));
+			case 'SupportsRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$SupportsRule,
+					_p10._0,
+					function (declarations) {
+						return {
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css_Preprocess$Snippet(declarations),
+							_1: {ctor: '[]'}
+						};
+					}(
+						A2(
+							_elm_lang$core$List$map,
+							_rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration(name),
+							A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, _p10._1))));
+			case 'DocumentRule':
+				return A5(
+					_rtfeldman$elm_css$Css_Preprocess$DocumentRule,
+					_p10._0,
+					_p10._1,
+					_p10._2,
+					_p10._3,
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock, name, _p10._4));
+			case 'PageRule':
+				return declaration;
+			case 'FontFace':
+				return declaration;
+			case 'Keyframes':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$Keyframes,
+					A2(_elm_lang$core$Basics_ops['++'], name, _p10._0),
+					_p10._1);
+			case 'Viewport':
+				return declaration;
+			case 'CounterStyle':
+				return declaration;
+			default:
+				return declaration;
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock = F2(
+	function (name, _p11) {
+		var _p12 = _p11;
+		return A3(
+			_rtfeldman$elm_css$Css_Preprocess$StyleBlock,
+			A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector, name, _p12._0),
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector(name),
+				_p12._1),
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+				_p12._2));
+	});
+var _rtfeldman$elm_css$Css_Namespace$namespace = F2(
+	function (rawIdentifier, snippets) {
+		return A2(
+			_elm_lang$core$List$map,
+			_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet(
+				_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(rawIdentifier)),
+			snippets);
+	});
+
 var _rtfeldman$elm_css_helpers$Html_CssHelpers$stylesheetLink = function (url) {
 	return A3(
 		_elm_lang$html$Html$node,
@@ -19608,21 +19817,27 @@ var _user$project$Routing$parseLang = function (lang) {
 };
 var _user$project$Routing$lang = A2(_evancz$url_parser$UrlParser$custom, 'LANGUAGE', _user$project$Routing$parseLang);
 var _user$project$Routing$toUrl = function (route) {
-	var _p1 = route;
-	if (_p1.ctor === 'SettingsRoute') {
-		var sMax = _elm_lang$core$Basics$toString(_p1._1);
-		var sLang = _elm_lang$core$String$toLower(
-			_elm_lang$core$Basics$toString(_p1._0));
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'#/',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				sLang,
-				A2(_elm_lang$core$Basics_ops['++'], '/', sMax)));
-	} else {
-		return '#';
-	}
+	var parts = function () {
+		var _p1 = route;
+		if (_p1.ctor === 'SettingsRoute') {
+			return {
+				ctor: '::',
+				_0: _elm_lang$core$String$toLower(
+					_elm_lang$core$Basics$toString(_p1._0)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(_p1._1),
+					_1: {ctor: '[]'}
+				}
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	}();
+	return A2(
+		_elm_lang$core$String$join,
+		'/',
+		{ctor: '::', _0: '#', _1: parts});
 };
 var _user$project$Routing$NotFoundRoute = {ctor: 'NotFoundRoute'};
 var _user$project$Routing$SettingsRoute = F2(
@@ -19876,6 +20091,7 @@ var _user$project$Styles_Constants$colors = {
 	correct: _rtfeldman$elm_css$Css$hex('C7F556'),
 	neutral: _rtfeldman$elm_css$Css$hex('4A9AC1')
 };
+var _user$project$Styles_Constants$gangetrening = 'Gangetrening';
 
 var _user$project$Styles_Classes$AnswerInput = {ctor: 'AnswerInput'};
 var _user$project$Styles_Classes$RingContent = {ctor: 'RingContent'};
@@ -19896,21 +20112,43 @@ var _user$project$Styles_Styles$css = function () {
 	var margins = _user$project$Styles_Constants$margins;
 	var colors = _user$project$Styles_Constants$colors;
 	var circle = _user$project$Styles_Constants$circle;
-	return _rtfeldman$elm_css$Css$stylesheet(
+	return function (_p0) {
+		return _rtfeldman$elm_css$Css$stylesheet(
+			A2(_rtfeldman$elm_css$Css_Namespace$namespace, _user$project$Styles_Constants$gangetrening, _p0));
+	}(
 		{
 			ctor: '::',
-			_0: _rtfeldman$elm_css$Css_Elements$a(
+			_0: _rtfeldman$elm_css$Css_Elements$body(
 				{
 					ctor: '::',
-					_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+					_0: _rtfeldman$elm_css$Css$backgroundColor(colors.background),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _rtfeldman$elm_css$Css_Elements$body(
+				_0: A2(
+					F2(
+						function (x, y) {
+							return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
+						}),
+					_user$project$Styles_Classes$PassphrasePanel,
 					{
 						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$backgroundColor(colors.background),
+						_0: _rtfeldman$elm_css$Css$children(
+							{
+								ctor: '::',
+								_0: _rtfeldman$elm_css$Css_Elements$div(
+									{
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$backgroundColor(colors.panel),
+										_1: {
+											ctor: '::',
+											_0: _rtfeldman$elm_css$Css$border(_rtfeldman$elm_css$Css$zero),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -19920,24 +20158,10 @@ var _user$project$Styles_Styles$css = function () {
 							function (x, y) {
 								return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 							}),
-						_user$project$Styles_Classes$PassphrasePanel,
+						_user$project$Styles_Classes$PassphraseText,
 						{
 							ctor: '::',
-							_0: _rtfeldman$elm_css$Css$children(
-								{
-									ctor: '::',
-									_0: _rtfeldman$elm_css$Css_Elements$div(
-										{
-											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$backgroundColor(colors.panel),
-											_1: {
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$border(_rtfeldman$elm_css$Css$zero),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
+							_0: _rtfeldman$elm_css$Css$color(colors.background),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -19947,10 +20171,10 @@ var _user$project$Styles_Styles$css = function () {
 								function (x, y) {
 									return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 								}),
-							_user$project$Styles_Classes$PassphraseText,
+							_user$project$Styles_Classes$PassphraseListItem,
 							{
 								ctor: '::',
-								_0: _rtfeldman$elm_css$Css$color(colors.background),
+								_0: _rtfeldman$elm_css$Css$listStyle(_rtfeldman$elm_css$Css$none),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
@@ -19960,11 +20184,27 @@ var _user$project$Styles_Styles$css = function () {
 									function (x, y) {
 										return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 									}),
-								_user$project$Styles_Classes$PassphraseListItem,
+								_user$project$Styles_Classes$PassphraseInput,
 								{
 									ctor: '::',
-									_0: _rtfeldman$elm_css$Css$listStyle(_rtfeldman$elm_css$Css$none),
-									_1: {ctor: '[]'}
+									_0: _rtfeldman$elm_css$Css$color(colors.panel),
+									_1: {
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$paddingTop(margins.small),
+										_1: {
+											ctor: '::',
+											_0: _rtfeldman$elm_css$Css$paddingBottom(margins.small),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$paddingLeft(margins.medium),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$paddingRight(margins.medium),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
 								}),
 							_1: {
 								ctor: '::',
@@ -19973,26 +20213,14 @@ var _user$project$Styles_Styles$css = function () {
 										function (x, y) {
 											return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 										}),
-									_user$project$Styles_Classes$PassphraseInput,
+									_user$project$Styles_Classes$PanelBody,
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Css$color(colors.panel),
+										_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
 										_1: {
 											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$paddingTop(margins.small),
-											_1: {
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$paddingBottom(margins.small),
-												_1: {
-													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$paddingLeft(margins.medium),
-													_1: {
-														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$paddingRight(margins.medium),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
+											_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
+											_1: {ctor: '[]'}
 										}
 									}),
 								_1: {
@@ -20002,15 +20230,11 @@ var _user$project$Styles_Styles$css = function () {
 											function (x, y) {
 												return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 											}),
-										_user$project$Styles_Classes$PanelBody,
+										_user$project$Styles_Classes$WrongAnswer,
 										{
 											ctor: '::',
-											_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
-											_1: {
-												ctor: '::',
-												_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
-												_1: {ctor: '[]'}
-											}
+											_0: _rtfeldman$elm_css$Css$backgroundColor(colors.error),
+											_1: {ctor: '[]'}
 										}),
 									_1: {
 										ctor: '::',
@@ -20019,11 +20243,22 @@ var _user$project$Styles_Styles$css = function () {
 												function (x, y) {
 													return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 												}),
-											_user$project$Styles_Classes$WrongAnswer,
+											_user$project$Styles_Classes$CircleFigure,
 											{
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$backgroundColor(colors.error),
-												_1: {ctor: '[]'}
+												_0: _rtfeldman$elm_css$Css$margin(
+													_rtfeldman$elm_css$Css$rem(5)),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$maxWidth(
+														_rtfeldman$elm_css$Css$rem(50)),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$flexGrow(
+															_rtfeldman$elm_css$Css$num(1)),
+														_1: {ctor: '[]'}
+													}
+												}
 											}),
 										_1: {
 											ctor: '::',
@@ -20032,21 +20267,17 @@ var _user$project$Styles_Styles$css = function () {
 													function (x, y) {
 														return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 													}),
-												_user$project$Styles_Classes$CircleFigure,
+												_user$project$Styles_Classes$Circle,
 												{
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$margin(
-														_rtfeldman$elm_css$Css$rem(5)),
+													_0: A2(_rtfeldman$elm_css$Css$property, 'fill', 'transparent'),
 													_1: {
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$maxWidth(
-															_rtfeldman$elm_css$Css$rem(50)),
-														_1: {
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$flexGrow(
-																_rtfeldman$elm_css$Css$num(1)),
-															_1: {ctor: '[]'}
-														}
+														_0: A2(
+															_rtfeldman$elm_css$Css$property,
+															'stroke-width',
+															_elm_lang$core$Basics$toString(circle.stroke)),
+														_1: {ctor: '[]'}
 													}
 												}),
 											_1: {
@@ -20056,18 +20287,11 @@ var _user$project$Styles_Styles$css = function () {
 														function (x, y) {
 															return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 														}),
-													_user$project$Styles_Classes$Circle,
+													_user$project$Styles_Classes$Wrong,
 													{
 														ctor: '::',
-														_0: A2(_rtfeldman$elm_css$Css$property, 'fill', 'transparent'),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_rtfeldman$elm_css$Css$property,
-																'stroke-width',
-																_elm_lang$core$Basics$toString(circle.stroke)),
-															_1: {ctor: '[]'}
-														}
+														_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.wrong.value),
+														_1: {ctor: '[]'}
 													}),
 												_1: {
 													ctor: '::',
@@ -20076,10 +20300,10 @@ var _user$project$Styles_Styles$css = function () {
 															function (x, y) {
 																return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 															}),
-														_user$project$Styles_Classes$Wrong,
+														_user$project$Styles_Classes$Correct,
 														{
 															ctor: '::',
-															_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.wrong.value),
+															_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.correct.value),
 															_1: {ctor: '[]'}
 														}),
 													_1: {
@@ -20089,10 +20313,10 @@ var _user$project$Styles_Styles$css = function () {
 																function (x, y) {
 																	return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 																}),
-															_user$project$Styles_Classes$Correct,
+															_user$project$Styles_Classes$Neutral,
 															{
 																ctor: '::',
-																_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.correct.value),
+																_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.neutral.value),
 																_1: {ctor: '[]'}
 															}),
 														_1: {
@@ -20102,11 +20326,45 @@ var _user$project$Styles_Styles$css = function () {
 																	function (x, y) {
 																		return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 																	}),
-																_user$project$Styles_Classes$Neutral,
+																_user$project$Styles_Classes$RingContent,
 																{
 																	ctor: '::',
-																	_0: A2(_rtfeldman$elm_css$Css$property, 'stroke', colors.neutral.value),
-																	_1: {ctor: '[]'}
+																	_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
+																		_1: {
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$top(_rtfeldman$elm_css$Css$zero),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$left(_rtfeldman$elm_css$Css$zero),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$height(
+																						_rtfeldman$elm_css$Css$pct(100)),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$width(
+																							_rtfeldman$elm_css$Css$pct(100)),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$alignItems(_rtfeldman$elm_css$Css$center),
+																								_1: {
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
+																									_1: {ctor: '[]'}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
 																}),
 															_1: {
 																ctor: '::',
@@ -20115,82 +20373,34 @@ var _user$project$Styles_Styles$css = function () {
 																		function (x, y) {
 																			return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
 																		}),
-																	_user$project$Styles_Classes$RingContent,
+																	_user$project$Styles_Classes$AnswerInput,
 																	{
 																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+																		_0: A3(
+																			_rtfeldman$elm_css$Css$border3,
+																			_rtfeldman$elm_css$Css$px(1),
+																			_rtfeldman$elm_css$Css$solid,
+																			colors.background),
 																		_1: {
 																			ctor: '::',
-																			_0: A2(_rtfeldman$elm_css$Css$property, 'display', 'flex'),
+																			_0: _rtfeldman$elm_css$Css$color(colors.background),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$top(_rtfeldman$elm_css$Css$zero),
+																				_0: _rtfeldman$elm_css$Css$backgroundColor(_rtfeldman$elm_css$Css$transparent),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$left(_rtfeldman$elm_css$Css$zero),
+																					_0: _rtfeldman$elm_css$Css$width(
+																						_rtfeldman$elm_css$Css$rem(7)),
 																					_1: {
 																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$height(
-																							_rtfeldman$elm_css$Css$pct(100)),
-																						_1: {
-																							ctor: '::',
-																							_0: _rtfeldman$elm_css$Css$width(
-																								_rtfeldman$elm_css$Css$pct(100)),
-																							_1: {
-																								ctor: '::',
-																								_0: A2(_rtfeldman$elm_css$Css$property, 'justify-content', 'center'),
-																								_1: {
-																									ctor: '::',
-																									_0: _rtfeldman$elm_css$Css$alignItems(_rtfeldman$elm_css$Css$center),
-																									_1: {
-																										ctor: '::',
-																										_0: _rtfeldman$elm_css$Css$textAlign(_rtfeldman$elm_css$Css$center),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
+																						_0: _rtfeldman$elm_css$Css$padding(margins.small),
+																						_1: {ctor: '[]'}
 																					}
 																				}
 																			}
 																		}
 																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		F2(
-																			function (x, y) {
-																				return A2(_rtfeldman$elm_css$Css_ops['.'], x, y);
-																			}),
-																		_user$project$Styles_Classes$AnswerInput,
-																		{
-																			ctor: '::',
-																			_0: A3(
-																				_rtfeldman$elm_css$Css$border3,
-																				_rtfeldman$elm_css$Css$px(1),
-																				_rtfeldman$elm_css$Css$solid,
-																				colors.background),
-																			_1: {
-																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$color(colors.background),
-																				_1: {
-																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$backgroundColor(_rtfeldman$elm_css$Css$transparent),
-																					_1: {
-																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$width(
-																							_rtfeldman$elm_css$Css$rem(7)),
-																						_1: {
-																							ctor: '::',
-																							_0: _rtfeldman$elm_css$Css$padding(margins.small),
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				}
-																			}
-																		}),
-																	_1: {ctor: '[]'}
-																}
+																_1: {ctor: '[]'}
 															}
 														}
 													}
@@ -20229,26 +20439,13 @@ var _user$project$Navbar$maximumSelector = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Navbar$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
-var _user$project$Navbar$id = _user$project$Navbar$_p0.id;
-var _user$project$Navbar$class = _user$project$Navbar$_p0.$class;
-var _user$project$Navbar$classList = _user$project$Navbar$_p0.classList;
 var _user$project$Navbar$navbar = function (model) {
 	var t = _user$project$Internationalization$getText(model.language);
 	return A2(
 		_elm_lang$html$Html$nav,
 		{
 			ctor: '::',
-			_0: _user$project$Navbar$class(
-				{
-					ctor: '::',
-					_0: 'navbar',
-					_1: {
-						ctor: '::',
-						_0: 'navbar-default',
-						_1: {ctor: '[]'}
-					}
-				}),
+			_0: _elm_lang$html$Html_Attributes$class('navbar navbar-default'),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -20257,12 +20454,7 @@ var _user$project$Navbar$navbar = function (model) {
 				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _user$project$Navbar$class(
-						{
-							ctor: '::',
-							_0: 'container-fluid',
-							_1: {ctor: '[]'}
-						}),
+					_0: _elm_lang$html$Html_Attributes$class('container-fluid'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -20271,12 +20463,7 @@ var _user$project$Navbar$navbar = function (model) {
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _user$project$Navbar$class(
-								{
-									ctor: '::',
-									_0: 'navbar-header',
-									_1: {ctor: '[]'}
-								}),
+							_0: _elm_lang$html$Html_Attributes$class('navbar-header'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -20288,16 +20475,7 @@ var _user$project$Navbar$navbar = function (model) {
 									_0: _elm_lang$html$Html_Attributes$type_('button'),
 									_1: {
 										ctor: '::',
-										_0: _user$project$Navbar$class(
-											{
-												ctor: '::',
-												_0: 'navbar-toggle',
-												_1: {
-													ctor: '::',
-													_0: 'collapsed',
-													_1: {ctor: '[]'}
-												}
-											}),
+										_0: _elm_lang$html$Html_Attributes$class('navbar-toggle collapsed'),
 										_1: {
 											ctor: '::',
 											_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'collapse'),
@@ -20319,12 +20497,7 @@ var _user$project$Navbar$navbar = function (model) {
 										_elm_lang$html$Html$span,
 										{
 											ctor: '::',
-											_0: _user$project$Navbar$class(
-												{
-													ctor: '::',
-													_0: 'sr-only',
-													_1: {ctor: '[]'}
-												}),
+											_0: _elm_lang$html$Html_Attributes$class('sr-only'),
 											_1: {ctor: '[]'}
 										},
 										{
@@ -20338,12 +20511,7 @@ var _user$project$Navbar$navbar = function (model) {
 											_elm_lang$html$Html$span,
 											{
 												ctor: '::',
-												_0: _user$project$Navbar$class(
-													{
-														ctor: '::',
-														_0: 'icon-bar',
-														_1: {ctor: '[]'}
-													}),
+												_0: _elm_lang$html$Html_Attributes$class('icon-bar'),
 												_1: {ctor: '[]'}
 											},
 											{ctor: '[]'}),
@@ -20353,12 +20521,7 @@ var _user$project$Navbar$navbar = function (model) {
 												_elm_lang$html$Html$span,
 												{
 													ctor: '::',
-													_0: _user$project$Navbar$class(
-														{
-															ctor: '::',
-															_0: 'icon-bar',
-															_1: {ctor: '[]'}
-														}),
+													_0: _elm_lang$html$Html_Attributes$class('icon-bar'),
 													_1: {ctor: '[]'}
 												},
 												{ctor: '[]'}),
@@ -20368,12 +20531,7 @@ var _user$project$Navbar$navbar = function (model) {
 													_elm_lang$html$Html$span,
 													{
 														ctor: '::',
-														_0: _user$project$Navbar$class(
-															{
-																ctor: '::',
-																_0: 'icon-bar',
-																_1: {ctor: '[]'}
-															}),
+														_0: _elm_lang$html$Html_Attributes$class('icon-bar'),
 														_1: {ctor: '[]'}
 													},
 													{ctor: '[]'}),
@@ -20388,15 +20546,10 @@ var _user$project$Navbar$navbar = function (model) {
 									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _user$project$Navbar$class(
-											{
-												ctor: '::',
-												_0: 'navbar-brand',
-												_1: {ctor: '[]'}
-											}),
+										_0: _elm_lang$html$Html_Attributes$class('navbar-brand'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('#'),
+											_0: _elm_lang$html$Html_Attributes$href(''),
 											_1: {ctor: '[]'}
 										}
 									},
@@ -20415,19 +20568,10 @@ var _user$project$Navbar$navbar = function (model) {
 							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _user$project$Navbar$class(
-									{
-										ctor: '::',
-										_0: 'collapse',
-										_1: {
-											ctor: '::',
-											_0: 'navbar-collapse',
-											_1: {ctor: '[]'}
-										}
-									}),
+								_0: _elm_lang$html$Html_Attributes$class('collapse navbar-collapse'),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Navbar$id('bs-navbar-collapsible'),
+									_0: _elm_lang$html$Html_Attributes$id('bs-navbar-collapsible'),
 									_1: {ctor: '[]'}
 								}
 							},
@@ -20437,20 +20581,7 @@ var _user$project$Navbar$navbar = function (model) {
 									_elm_lang$html$Html$ul,
 									{
 										ctor: '::',
-										_0: _user$project$Navbar$class(
-											{
-												ctor: '::',
-												_0: 'nav',
-												_1: {
-													ctor: '::',
-													_0: 'navbar-nav',
-													_1: {
-														ctor: '::',
-														_0: 'navbar-right',
-														_1: {ctor: '[]'}
-													}
-												}
-											}),
+										_0: _elm_lang$html$Html_Attributes$class('nav navbar-nav navbar-right'),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -20459,12 +20590,7 @@ var _user$project$Navbar$navbar = function (model) {
 											_elm_lang$html$Html$li,
 											{
 												ctor: '::',
-												_0: _user$project$Navbar$class(
-													{
-														ctor: '::',
-														_0: 'dropdown',
-														_1: {ctor: '[]'}
-													}),
+												_0: _elm_lang$html$Html_Attributes$class('dropdown'),
 												_1: {ctor: '[]'}
 											},
 											{
@@ -20476,12 +20602,7 @@ var _user$project$Navbar$navbar = function (model) {
 														_0: _elm_lang$html$Html_Attributes$href('#'),
 														_1: {
 															ctor: '::',
-															_0: _user$project$Navbar$class(
-																{
-																	ctor: '::',
-																	_0: 'dropdown-toggle',
-																	_1: {ctor: '[]'}
-																}),
+															_0: _elm_lang$html$Html_Attributes$class('dropdown-toggle'),
 															_1: {
 																ctor: '::',
 																_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'dropdown'),
@@ -20515,12 +20636,7 @@ var _user$project$Navbar$navbar = function (model) {
 																	_elm_lang$html$Html$span,
 																	{
 																		ctor: '::',
-																		_0: _user$project$Navbar$class(
-																			{
-																				ctor: '::',
-																				_0: 'caret',
-																				_1: {ctor: '[]'}
-																			}),
+																		_0: _elm_lang$html$Html_Attributes$class('caret'),
 																		_1: {ctor: '[]'}
 																	},
 																	{ctor: '[]'}),
@@ -20534,12 +20650,7 @@ var _user$project$Navbar$navbar = function (model) {
 														_elm_lang$html$Html$ul,
 														{
 															ctor: '::',
-															_0: _user$project$Navbar$class(
-																{
-																	ctor: '::',
-																	_0: 'dropdown-menu',
-																	_1: {ctor: '[]'}
-																}),
+															_0: _elm_lang$html$Html_Attributes$class('dropdown-menu'),
 															_1: {ctor: '[]'}
 														},
 														{
@@ -20598,12 +20709,7 @@ var _user$project$Navbar$navbar = function (model) {
 												_elm_lang$html$Html$li,
 												{
 													ctor: '::',
-													_0: _user$project$Navbar$class(
-														{
-															ctor: '::',
-															_0: 'dropdown',
-															_1: {ctor: '[]'}
-														}),
+													_0: _elm_lang$html$Html_Attributes$class('dropdown'),
 													_1: {ctor: '[]'}
 												},
 												{
@@ -20612,15 +20718,10 @@ var _user$project$Navbar$navbar = function (model) {
 														_elm_lang$html$Html$a,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$href('#'),
+															_0: _elm_lang$html$Html_Attributes$href(''),
 															_1: {
 																ctor: '::',
-																_0: _user$project$Navbar$class(
-																	{
-																		ctor: '::',
-																		_0: 'dropdown-toggle',
-																		_1: {ctor: '[]'}
-																	}),
+																_0: _elm_lang$html$Html_Attributes$class('dropdown-toggle'),
 																_1: {
 																	ctor: '::',
 																	_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'dropdown'),
@@ -20650,12 +20751,7 @@ var _user$project$Navbar$navbar = function (model) {
 																	_elm_lang$html$Html$span,
 																	{
 																		ctor: '::',
-																		_0: _user$project$Navbar$class(
-																			{
-																				ctor: '::',
-																				_0: 'caret',
-																				_1: {ctor: '[]'}
-																			}),
+																		_0: _elm_lang$html$Html_Attributes$class('caret'),
 																		_1: {ctor: '[]'}
 																	},
 																	{ctor: '[]'}),
@@ -20668,12 +20764,7 @@ var _user$project$Navbar$navbar = function (model) {
 															_elm_lang$html$Html$ul,
 															{
 																ctor: '::',
-																_0: _user$project$Navbar$class(
-																	{
-																		ctor: '::',
-																		_0: 'dropdown-menu',
-																		_1: {ctor: '[]'}
-																	}),
+																_0: _elm_lang$html$Html_Attributes$class('dropdown-menu'),
 																_1: {ctor: '[]'}
 															},
 															{
@@ -20741,6 +20832,24 @@ var _user$project$ScoreRing$separatorList = function (sep) {
 };
 var _user$project$ScoreRing$commaList = _user$project$ScoreRing$separatorList(', ');
 var _user$project$ScoreRing$spaceList = _user$project$ScoreRing$separatorList(' ');
+var _user$project$ScoreRing$class_ = function (_p1) {
+	return _elm_lang$svg$Svg_Attributes$class(
+		A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p2) {
+					return A2(
+						F2(
+							function (x, y) {
+								return A2(_elm_lang$core$Basics_ops['++'], x, y);
+							}),
+						_user$project$Styles_Constants$gangetrening,
+						_elm_lang$core$Basics$toString(_p2));
+				},
+				_p1)));
+};
 var _user$project$ScoreRing$makeCircle = F4(
 	function (n, total, radius, cls) {
 		var circumference = (2 * _elm_lang$core$Basics$pi) * radius;
@@ -20784,11 +20893,16 @@ var _user$project$ScoreRing$makeCircle = F4(
 								}),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$class(
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										'Circle ',
-										_elm_lang$core$Basics$toString(cls))),
+								_0: _user$project$ScoreRing$class_(
+									{
+										ctor: '::',
+										_0: _user$project$Styles_Classes$Circle,
+										_1: {
+											ctor: '::',
+											_0: cls,
+											_1: {ctor: '[]'}
+										}
+									}),
 								_1: {ctor: '[]'}
 							}
 						}
@@ -20814,8 +20928,8 @@ var _user$project$ScoreRing$circleFolder = F4(
 	});
 var _user$project$ScoreRing$circles = F3(
 	function (model, radius, count) {
-		var _p1 = model.gameState;
-		switch (_p1.ctor) {
+		var _p3 = model.gameState;
+		switch (_p3.ctor) {
 			case 'Running':
 				return A3(
 					_elm_lang$core$List$foldl,
@@ -20845,8 +20959,12 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 		_elm_lang$html$Html$figure,
 		{
 			ctor: '::',
-			_0: _elm_lang$svg$Svg_Attributes$class(
-				_elm_lang$core$Basics$toString(_user$project$Styles_Classes$CircleFigure)),
+			_0: _user$project$ScoreRing$class_(
+				{
+					ctor: '::',
+					_0: _user$project$Styles_Classes$CircleFigure,
+					_1: {ctor: '[]'}
+				}),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -20860,30 +20978,26 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 						_elm_lang$svg$Svg$svg,
 						{
 							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$class('Chart'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$viewBox(
-									_user$project$ScoreRing$spaceList(
-										{
+							_0: _elm_lang$svg$Svg_Attributes$viewBox(
+								_user$project$ScoreRing$spaceList(
+									{
+										ctor: '::',
+										_0: 0,
+										_1: {
 											ctor: '::',
 											_0: 0,
 											_1: {
 												ctor: '::',
-												_0: 0,
+												_0: viewBoxSize,
 												_1: {
 													ctor: '::',
 													_0: viewBoxSize,
-													_1: {
-														ctor: '::',
-														_0: viewBoxSize,
-														_1: {ctor: '[]'}
-													}
+													_1: {ctor: '[]'}
 												}
 											}
-										})),
-								_1: {ctor: '[]'}
-							}
+										}
+									})),
+							_1: {ctor: '[]'}
 						},
 						A3(_user$project$ScoreRing$circles, model, radius, count)),
 					_1: {ctor: '[]'}
@@ -20892,22 +21006,24 @@ var _user$project$ScoreRing$scoreRing = function (model) {
 		});
 };
 
-var _user$project$View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
-var _user$project$View$id = _user$project$View$_p0.id;
-var _user$project$View$class = _user$project$View$_p0.$class;
-var _user$project$View$classList = _user$project$View$_p0.classList;
+var _user$project$View$helpers = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace(_user$project$Styles_Constants$gangetrening);
+var _user$project$View$class_ = _user$project$View$helpers.$class;
 var _user$project$View$ringContent = function (model) {
 	var t = _user$project$Internationalization$getText(model.language);
 	var innerContent = function () {
-		var _p1 = model.gameState;
-		switch (_p1.ctor) {
+		var _p0 = model.gameState;
+		switch (_p0.ctor) {
 			case 'NotStarted':
 				return A2(
 					_elm_lang$html$Html$a,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
-						_1: {ctor: '[]'}
+						_0: _elm_lang$html$Html_Attributes$href(''),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
+							_1: {ctor: '[]'}
+						}
 					},
 					{
 						ctor: '::',
@@ -20916,8 +21032,8 @@ var _user$project$View$ringContent = function (model) {
 						_1: {ctor: '[]'}
 					});
 			case 'Running':
-				var _p2 = model.multiplications;
-				if ((_p2.ctor === '::') && (_p2._0.ctor === '_Tuple3')) {
+				var _p1 = model.multiplications;
+				if ((_p1.ctor === '::') && (_p1._0.ctor === '_Tuple3')) {
 					return A2(
 						_elm_lang$html$Html$form,
 						{
@@ -20928,7 +21044,7 @@ var _user$project$View$ringContent = function (model) {
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(_p2._0._0)),
+								_elm_lang$core$Basics$toString(_p1._0._0)),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(
@@ -20936,7 +21052,7 @@ var _user$project$View$ringContent = function (model) {
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html$text(
-										_elm_lang$core$Basics$toString(_p2._0._1)),
+										_elm_lang$core$Basics$toString(_p1._0._1)),
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$html$Html$text(' = '),
@@ -20946,7 +21062,7 @@ var _user$project$View$ringContent = function (model) {
 												_elm_lang$html$Html$input,
 												{
 													ctor: '::',
-													_0: _user$project$View$class(
+													_0: _user$project$View$class_(
 														{
 															ctor: '::',
 															_0: _user$project$Styles_Classes$AnswerInput,
@@ -20954,7 +21070,7 @@ var _user$project$View$ringContent = function (model) {
 														}),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(_p2._0._2),
+														_0: _elm_lang$html$Html_Attributes$value(_p1._0._2),
 														_1: {
 															ctor: '::',
 															_0: _elm_lang$html$Html_Events$onInput(_user$project$Message$NewAnswer),
@@ -20996,8 +21112,12 @@ var _user$project$View$ringContent = function (model) {
 								_elm_lang$html$Html$a,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
-									_1: {ctor: '[]'}
+									_0: _elm_lang$html$Html_Attributes$href(''),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Message$Start),
+										_1: {ctor: '[]'}
+									}
 								},
 								{
 									ctor: '::',
@@ -21014,7 +21134,7 @@ var _user$project$View$ringContent = function (model) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _user$project$View$class(
+			_0: _user$project$View$class_(
 				{
 					ctor: '::',
 					_0: _user$project$Styles_Classes$RingContent,
@@ -21028,7 +21148,7 @@ var _user$project$View$ringContent = function (model) {
 				_elm_lang$html$Html$h1,
 				{
 					ctor: '::',
-					_0: _user$project$View$class(
+					_0: _user$project$View$class_(
 						{
 							ctor: '::',
 							_0: _user$project$Styles_Classes$PassphraseText,
@@ -21058,7 +21178,7 @@ var _user$project$View$view = function (model) {
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _user$project$View$class(
+						_0: _user$project$View$class_(
 							{
 								ctor: '::',
 								_0: _user$project$Styles_Classes$PassphrasePanel,
@@ -21072,20 +21192,7 @@ var _user$project$View$view = function (model) {
 							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _user$project$View$class(
-									{
-										ctor: '::',
-										_0: 'panel',
-										_1: {
-											ctor: '::',
-											_0: 'panel-default',
-											_1: {
-												ctor: '::',
-												_0: 'col-md-12',
-												_1: {ctor: '[]'}
-											}
-										}
-									}),
+								_0: _elm_lang$html$Html_Attributes$class('panel panel-default col-md-12'),
 								_1: {ctor: '[]'}
 							},
 							{
@@ -21094,7 +21201,7 @@ var _user$project$View$view = function (model) {
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _user$project$View$class(
+										_0: _user$project$View$class_(
 											{
 												ctor: '::',
 												_0: _user$project$Styles_Classes$PanelBody,

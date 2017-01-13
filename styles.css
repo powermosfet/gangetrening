@@ -1,25 +1,21 @@
-a {
-    cursor: pointer;
-}
-
 body {
     background-color: #edeff0;
 }
 
-.PassphrasePanel > div {
+.GangetreningPassphrasePanel > div {
     background-color: #000000;
     border: 0;
 }
 
-.PassphraseText {
+.GangetreningPassphraseText {
     color: #edeff0;
 }
 
-.PassphraseListItem {
+.GangetreningPassphraseListItem {
     list-style: none;
 }
 
-.PassphraseInput {
+.GangetreningPassphraseInput {
     color: #000000;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
@@ -27,39 +23,39 @@ body {
     padding-right: 1rem;
 }
 
-.PanelBody {
+.GangetreningPanelBody {
     display: flex;
     justify-content: center;
 }
 
-.WrongAnswer {
+.GangetreningWrongAnswer {
     background-color: #e41f1f;
 }
 
-.CircleFigure {
+.GangetreningCircleFigure {
     margin: 5rem;
     max-width: 50rem;
     flex-grow: 1;
 }
 
-.Circle {
+.GangetreningCircle {
     fill: transparent;
     stroke-width: 2;
 }
 
-.Wrong {
+.GangetreningWrong {
     stroke: #FF6559;
 }
 
-.Correct {
+.GangetreningCorrect {
     stroke: #C7F556;
 }
 
-.Neutral {
+.GangetreningNeutral {
     stroke: #4A9AC1;
 }
 
-.RingContent {
+.GangetreningRingContent {
     position: absolute;
     display: flex;
     top: 0;
@@ -71,7 +67,7 @@ body {
     text-align: center;
 }
 
-.AnswerInput {
+.GangetreningAnswerInput {
     border: 1px solid #edeff0;
     color: #edeff0;
     background-color: transparent;
