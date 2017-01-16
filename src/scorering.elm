@@ -12,6 +12,7 @@ import Styles.Constants as C
 import Html.CssHelpers as Hlp
 
 
+class_ : List Cls.CssClasses -> Html.Attribute Msg
 class_ =
     List.map
         (toString
@@ -39,8 +40,7 @@ scoreRing model =
         figure [ class_ [ Cls.CircleFigure ] ]
             [ div []
                 [ svg
-                    [ viewBox <| spaceList [ 0, 0, viewBoxSize, viewBoxSize ]
-                    ]
+                    [ viewBox <| spaceList [ 0, 0, viewBoxSize, viewBoxSize ] ]
                     (circles model radius count)
                 ]
             ]
